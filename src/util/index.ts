@@ -1,3 +1,2 @@
-export function createUUID(): string {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-}
+// 返回UUID
+export const UUID = (): string => crypto.randomUUID()

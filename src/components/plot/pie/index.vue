@@ -43,8 +43,8 @@ class Pie {
     const { id, width, height, data, nightingaleRose, outerRadius, innerRadius, cornerRadius, padAngle } = option
     this.id = id
     this.data = data
-    this.width = width || 400
-    this.height = height || 400
+    this.width = width || 200
+    this.height = height || 200
     this.nightingaleRose = nightingaleRose || false // 南丁格尔玫瑰图模式
     this.outerRadius = outerRadius || this.width / 3 // 外半径
     this.innerRadius = innerRadius || this.width / 4 // 内半径

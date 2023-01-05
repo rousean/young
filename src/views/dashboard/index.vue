@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="dashboard">
 import { defineAsyncComponent } from 'vue'
 const PlotGlobal = defineAsyncComponent(() => import('./plotGlobal.vue'))
 
@@ -30,7 +30,7 @@ const PlotConfig = defineAsyncComponent(() => import('@/views/config/index.vue')
     overflow: hidden;
     > :nth-child(2) {
       flex: 1;
-      overflow: scroll;
+      // overflow: scroll;
     }
   }
 }

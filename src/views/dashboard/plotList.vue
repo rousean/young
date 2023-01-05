@@ -8,8 +8,8 @@
           </div>
           <span>{{ plot.label }}</span>
         </template>
-        <div class="plot-container">
-          <div class="plot-child" v-for="child in plot.children" :key="child.label" @click="createPlot(child.type)">
+        <div class="plot-container" @dragend="handleDragend">
+          <div class="plot-child" draggable="true" v-for="child in plot.children" :key="child.label" :data-type="child.type">
             <SvgIcon :name="child.icon" size="64"></SvgIcon>
             <div>{{ child.label }}</div>
           </div>
@@ -25,6 +25,7 @@ import { plotList } from './list'
 import { computed, defineAsyncComponent, ref } from 'vue'
 import { ElMenu, ElSubMenu } from 'element-plus'
 import { useDashboardStore } from '@/stores/dashboard'
+import { UUID } from '@/util/index'
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 
 const isCollapse = ref<boolean>(false)
@@ -35,9 +36,11 @@ const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-rig
 const changeCollapse = (): boolean => (isCollapse.value = !isCollapse.value)
 
 const store = useDashboardStore()
-const createPlot = async (type: string): Promise<void> => {
+
+const handleDragend = async (e: DragEvent): Promise<void> => {
+  const type = (e.target as HTMLElement).dataset.type as string
   const style = await import(`../../components/plot/${type}/style.ts`)
-  store.painting({ type, UUID: crypto.randomUUID(), style: style.default })
+  store.painting({ type, UUID: UUID(), style: style.default })
 }
 </script>
 

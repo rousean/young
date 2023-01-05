@@ -40,6 +40,7 @@ const changeCollapse = () => {
   width: 360px;
   border-left: 1px solid #dcdfe6;
   transition: all 0.5s ease-in-out;
+  box-shadow: var(--el-box-shadow);
   .config-icon {
     position: absolute;
     top: 50%;
@@ -47,6 +48,8 @@ const changeCollapse = () => {
     transform: translateY(-50%);
     border: 1px solid #dcdfe6;
     cursor: pointer;
+    background: #b3b3b3;
+    opacity: 0.8;
   }
   .config-pane {
     padding: 0 10px;
