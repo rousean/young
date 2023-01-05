@@ -7,6 +7,9 @@ interface DashboardState {
 interface Dashboard {
   type: string
   UUID: string
+  data?: []
+  config?: {}
+  style?: {}
 }
 
 export const useDashboardStore = defineStore('dashboard', {

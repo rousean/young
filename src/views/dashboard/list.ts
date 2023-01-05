@@ -5,12 +5,12 @@ export const plotList = [
     children: [
       {
         label: '折线图',
-        type: 'line',
+        type: 'pie',
         icon: 'line'
       },
       {
         label: '面积图',
-        type: 'line',
+        type: 'pie',
         icon: 'area'
       }
     ]

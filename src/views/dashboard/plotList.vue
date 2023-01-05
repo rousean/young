@@ -1,26 +1,22 @@
 <template>
   <div class="plot-list-wrapper">
-    <div>
-      <el-menu class="list-container" :collapse="isCollapse" :default-openeds="defaultOpeneds">
-        <el-sub-menu v-for="plot in plotList" :key="plot.label" :index="plot.label">
-          <template #title>
-            <div class="icon-wrapper">
-              <SvgIcon :name="plot.icon" size="22"></SvgIcon>
-            </div>
-            <span>{{ plot.label }}</span>
-          </template>
-          <div class="plot-container">
-            <div class="plot-child" v-for="child in plot.children" :key="child.label" @click="createPlot(child.type)">
-              <SvgIcon :name="child.icon" size="64"></SvgIcon>
-              <div>{{ child.label }}</div>
-            </div>
+    <el-menu class="list-container" :collapse="isCollapse" :default-openeds="defaultOpeneds">
+      <el-sub-menu v-for="plot in plotList" :key="plot.label" :index="plot.label">
+        <template #title>
+          <div class="icon-wrapper">
+            <SvgIcon :name="plot.icon" size="22"></SvgIcon>
           </div>
-        </el-sub-menu>
-      </el-menu>
-    </div>
-    <div @click="changeCollapse">
-      <SvgIcon :name="collapseIcon" size="32"></SvgIcon>
-    </div>
+          <span>{{ plot.label }}</span>
+        </template>
+        <div class="plot-container">
+          <div class="plot-child" v-for="child in plot.children" :key="child.label" @click="createPlot(child.type)">
+            <SvgIcon :name="child.icon" size="64"></SvgIcon>
+            <div>{{ child.label }}</div>
+          </div>
+        </div>
+      </el-sub-menu>
+    </el-menu>
+    <SvgIcon :name="collapseIcon" size="32" @click="changeCollapse"></SvgIcon>
   </div>
 </template>
 
@@ -39,24 +35,25 @@ const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-rig
 const changeCollapse = (): boolean => (isCollapse.value = !isCollapse.value)
 
 const store = useDashboardStore()
-const createPlot = (type: string): void => store.painting({ type, UUID: crypto.randomUUID() })
+const createPlot = async (type: string): Promise<void> => {
+  const style = await import(`../../components/plot/${type}/style.ts`)
+  store.painting({ type, UUID: crypto.randomUUID(), style: style.default })
+}
 </script>
 
 <style lang="scss" scoped>
 .plot-list-wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 100%;
   border-right: 1px solid #dcdfe6;
-
   > :nth-child(1) {
     flex: 1;
     overflow: auto;
   }
 
   > :nth-child(2) {
-    height: 40px;
-    text-align: center;
     cursor: pointer;
   }
 
@@ -68,6 +65,7 @@ const createPlot = (type: string): void => store.painting({ type, UUID: crypto.r
     display: flex;
     margin-right: 10px;
   }
+
   :deep(.el-menu) {
     border-right: 0;
   }

@@ -1,5 +1,5 @@
 <template>
-  <component :is="currentComponent"></component>
+  <component :is="currentComponent" :plot="plot" style="border: 1px solid #000; position: absolute;"></component>
 </template>
 
 <script setup lang="ts">
