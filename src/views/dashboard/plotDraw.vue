@@ -2,7 +2,7 @@
   <ElScrollbar>
     <div class="painting-container">
       <div id="painting-bg"></div>
-      <ProxyPlot v-for="plot in store.dashboard" :key="plot.UUID" :plot="plot"></ProxyPlot>
+      <ProxyPlot v-for="plot in store.dashboard.canvas" :key="plot.id" :plot="plot"></ProxyPlot>
     </div>
   </ElScrollbar>
 </template>

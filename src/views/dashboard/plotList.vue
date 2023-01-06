@@ -40,7 +40,7 @@ const store = useDashboardStore()
 const handleDragend = async (e: DragEvent): Promise<void> => {
   const type = (e.target as HTMLElement).dataset.type as string
   const style = await import(`../../components/plot/${type}/style.ts`)
-  store.painting({ type, UUID: UUID(), style: style.default })
+  store.painting({ type, id: UUID(), style: style.default })
 }
 </script>
 

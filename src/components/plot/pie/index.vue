@@ -17,7 +17,7 @@ const props = defineProps({
   }
 })
 
-const ID = computed(() => `Young-${props.plot.UUID}`)
+const ID = computed(() => `Young-${props.plot.id}`)
 
 // interface Option {
 //   id: any

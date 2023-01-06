@@ -14,8 +14,8 @@ interface Dashboard {
 
 // 单个图表组件属性
 interface Canvas {
-  id: string
-  type: string
+  id?: string
+  type?: string
   data?: any
   style?: any
 }
