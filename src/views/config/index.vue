@@ -24,13 +24,12 @@ const ParamConfig = defineAsyncComponent(() => import('./paramConfig.vue'))
 const DataConfig = defineAsyncComponent(() => import('./dataConfig.vue'))
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 
-const isCollapse = ref<boolean>(false)
-const width = ref<string>('360px')
+const isCollapse = ref<boolean>(true)
+const width = computed<string>(() => (isCollapse.value ? '0px' : '360px'))
 const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-right' : 'indentation-left'))
 
 const changeCollapse = () => {
   isCollapse.value = !isCollapse.value
-  width.value = isCollapse.value ? '0px' : '360px'
 }
 </script>
 
@@ -41,6 +40,7 @@ const changeCollapse = () => {
   border-left: 1px solid #dcdfe6;
   transition: all 0.5s ease-in-out;
   box-shadow: var(--el-box-shadow);
+  z-index: 200;
   .config-icon {
     position: absolute;
     top: 50%;

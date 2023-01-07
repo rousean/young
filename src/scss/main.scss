@@ -1,8 +1,8 @@
 @import './index.scss';
 
-// ::-webkit-scrollbar {
-//   display: none; /* Chrome Safari */
-// }
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
 #app {
   --el-menu-item-height: 40px;
 }

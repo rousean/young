@@ -3,7 +3,7 @@
     <PlotGlobal></PlotGlobal>
     <div class="operate-wrapper">
       <PlotList></PlotList>
-      <PlotDraw></PlotDraw>
+      <PlotCanvas></PlotCanvas>
       <PlotConfig></PlotConfig>
     </div>
   </div>
@@ -12,9 +12,9 @@
 <script setup lang="ts" name="dashboard">
 import { defineAsyncComponent } from 'vue'
 const PlotGlobal = defineAsyncComponent(() => import('./plotGlobal.vue'))
-
 const PlotList = defineAsyncComponent(() => import('./plotList.vue'))
-const PlotDraw = defineAsyncComponent(() => import('./plotDraw.vue'))
+
+const PlotCanvas = defineAsyncComponent(() => import('@/views/canvas/index.vue'))
 const PlotConfig = defineAsyncComponent(() => import('@/views/config/index.vue'))
 </script>
 
@@ -31,8 +31,6 @@ const PlotConfig = defineAsyncComponent(() => import('@/views/config/index.vue')
     > :nth-child(2) {
       flex: 1;
       overflow: hidden;
-      // margin-bottom: 50px;
-      // margin-right: 50px;
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="global-config">
-    <div>
+    <div @click="back">
       <SvgIcon name="return" size="32"></SvgIcon>
     </div>
     <div class="btn">
@@ -12,10 +12,12 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-
+import { useRouter } from 'vue-router'
 import { ElButton } from 'element-plus'
 
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
+const router = useRouter()
+const back = () => router.push('/layout')
 </script>
 
 <style lang="scss" scoped>

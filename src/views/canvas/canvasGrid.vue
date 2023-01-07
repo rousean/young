@@ -43,11 +43,3 @@ function paintingGrid(width: number, height: number): void {
     .call((g) => g.selectAll('.tick text').remove())
 }
 </script>
-
-<style lang="scss" scoped>
-#canvas-grid {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
-</style>

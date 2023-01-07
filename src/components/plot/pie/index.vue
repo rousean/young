@@ -1,14 +1,13 @@
 <template>
-  <div :id="ID" style="width: 400px; height: 400px"></div>
+  <div :id="ID"></div>
 </template>
 
 <script setup lang="ts">
+import type { HSLColor } from 'd3'
 import * as d3 from 'd3'
 import { computed, onMounted } from 'vue'
 
-import config from './config'
 import data from './data'
-import style from './style'
 
 const props = defineProps({
   plot: {
@@ -19,17 +18,17 @@ const props = defineProps({
 
 const ID = computed(() => `Young-${props.plot.id}`)
 
-// interface Option {
-//   id: any
-//   data: any
-//   width?: any
-//   height?: any
-//   NightingaleRose?: any
-//   outerRadius?: any
-//   innerRadius?: any
-//   cornerRadius?: any
-//   padAngle?: any
-// }
+interface Option {
+  id: string
+  data: PieData[]
+  width: number
+  height: number
+  nightingaleRose: boolean
+  outerRadius: number
+  innerRadius: number
+  cornerRadius: number
+  padAngle: number
+}
 
 interface PieData {
   name: string
@@ -39,7 +38,15 @@ interface PieData {
 class Pie {
   id: string
   data: PieData[]
-  constructor(option) {
+  width: number
+  height: number
+  nightingaleRose: boolean
+  outerRadius: number
+  innerRadius: number
+  cornerRadius: number
+  padAngle: number
+  svg: any
+  constructor(option: Option) {
     const { id, width, height, data, nightingaleRose, outerRadius, innerRadius, cornerRadius, padAngle } = option
     this.id = id
     this.data = data
@@ -70,21 +77,22 @@ class Pie {
   }
 
   createPie() {
+    const values: Iterable<number> = this.data.map((item) => item.value)
     // 构建比例尺 南丁格尔模式使用
     const lineScale = d3
       .scaleLinear()
-      .domain([0, d3.max(this.data.map((item) => item.value))])
+      .domain([0, d3.max(values)])
       .range([this.innerRadius, this.outerRadius])
     const arc = d3
       .arc()
       .innerRadius(this.innerRadius)
-      .outerRadius((d) => (this.NightingaleRose ? lineScale(d.value) : this.outerRadius))
+      .outerRadius((d: any) => (this.nightingaleRose ? lineScale(d.value) : this.outerRadius))
       .cornerRadius(this.cornerRadius)
     const pie = d3
       .pie()
       .padAngle(this.padAngle)
-      .value((d) => d.value)(this.data)
-    pie.forEach((item) => {
+      .value((d: any) => d.value)(this.data)
+    pie.forEach((item: any) => {
       item.color = d3.interpolateRainbow(item.index / pie.length)
     })
     const pieGroup = this.svg
@@ -92,34 +100,34 @@ class Pie {
       .data(pie)
       .enter()
       .append('g')
-      .on('mouseover', (event, d) => {
-        d3.select(event.currentTarget).transition().duration(250).attr('transform', this.calcTranslate(d, 6))
-        d3.select(event.currentTarget)
+      .on('mouseover', (e: any, d: any) => {
+        d3.select(e.currentTarget).transition().duration(250).attr('transform', this.calcTranslate(d, 6))
+        d3.select(e.currentTarget)
           .select('path')
-          .attr('stroke', (d) => d3.hsl(d.color).darker(1))
+          .attr('stroke', (d: any): any => d3.hsl(d.color).darker(1))
       })
-      .on('mouseout', (event, d) => {
-        d3.select(event.currentTarget).transition().duration(250).attr('transform', 'translate(0, 0)')
-        d3.select(event.currentTarget)
+      .on('mouseout', (e: any) => {
+        d3.select(e.currentTarget).transition().duration(250).attr('transform', 'translate(0, 0)')
+        d3.select(e.currentTarget)
           .select('path')
-          .attr('stroke', (d) => d.color)
+          .attr('stroke', (d: any) => d.color)
       })
     pieGroup
       .append('path')
       .attr('d', arc)
-      .attr('fill', (d) => d.color)
-      .attr('stroke', (d) => d.color)
+      .attr('fill', (d: any) => d.color)
+      .attr('stroke', (d: any) => d.color)
       .attr('opacity', 0.9)
     pieGroup
       .append('text')
-      .attr('transform', (d) => `translate(${arc.centroid(d)})`)
-      .text((d) => d.data.name)
+      .attr('transform', (d: any) => `translate(${arc.centroid(d)})`)
+      .text((d: any) => d.data.name)
       .attr('text-anchor', 'middle')
       .attr('font-size', 12)
-      .style('display', (d) => (d.endAngle - d.startAngle > Math.PI / 8 ? 'inline' : 'none'))
+      .style('display', (d: any) => (d.endAngle - d.startAngle > Math.PI / 8 ? 'inline' : 'none'))
   }
 
-  calcTranslate(d, move) {
+  calcTranslate(d: any, move: number) {
     const moveAngle = d.startAngle + (d.endAngle - d.startAngle) / 2
     return `translate(${-move * Math.cos(moveAngle + Math.PI / 2)}, ${-move * Math.sin(moveAngle + Math.PI / 2)})`
   }

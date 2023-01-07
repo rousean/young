@@ -19,6 +19,8 @@ interface Dashboard {
 interface Canvas {
   id?: string
   type?: string
+  x: number
+  y: number
   data?: any
   style?: any
 }

@@ -8,7 +8,7 @@
           </div>
           <span>{{ plot.label }}</span>
         </template>
-        <div class="plot-container" @dragend="handleDragend">
+        <div class="plot-container" @dragstart="handleDragStart">
           <div class="plot-child" draggable="true" v-for="child in plot.children" :key="child.label" :data-type="child.type">
             <SvgIcon :name="child.icon" size="64"></SvgIcon>
             <div>{{ child.label }}</div>
@@ -24,8 +24,7 @@
 import { plotList } from './list'
 import { computed, defineAsyncComponent, ref } from 'vue'
 import { ElMenu, ElSubMenu } from 'element-plus'
-import { useDashboardStore } from '@/stores/dashboard'
-import { UUID } from '@/util/index'
+
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 
 const isCollapse = ref<boolean>(false)
@@ -35,13 +34,13 @@ const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-rig
 
 const changeCollapse = (): boolean => (isCollapse.value = !isCollapse.value)
 
-const store = useDashboardStore()
-
-const handleDragend = async (e: DragEvent): Promise<void> => {
-  const type = (e.target as HTMLElement).dataset.type as string
-  const style = await import(`../../components/plot/${type}/style.ts`)
-  store.painting({ type, id: UUID(), style: style.default })
+function handleDragStart(e: DragEvent) {
+  e.dataTransfer!.setData('type', (e.target as HTMLElement).dataset.type as string)
 }
+
+// const handleDragend = async (e: DragEvent): Promise<void> => {
+//   const type = (e.target as HTMLElement).dataset.type as string
+// }
 </script>
 
 <style lang="scss" scoped>
