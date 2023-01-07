@@ -1,18 +1,21 @@
 import { defineStore } from 'pinia'
-
+import { UUID } from '@/util/index'
+// 当前store
 interface DashboardState {
   dashboard: Dashboard
+  currentId: string
 }
 
-// 整个画布属性
+// 仪表盘属性
 interface Dashboard {
-  width?: number
-  height?: number
-  name?: string
-  canvas?: Canvas[]
+  readonly id?: string
+  width: string
+  height: string
+  name: string
+  canvas: Canvas[]
 }
 
-// 单个图表组件属性
+// 画布属性
 interface Canvas {
   id?: string
   type?: string
@@ -22,9 +25,24 @@ interface Canvas {
 
 export const useDashboardStore = defineStore('dashboard', {
   state: (): DashboardState => ({
-    dashboard: {}
+    dashboard: {
+      width: '1920',
+      height: '1080',
+      name: '',
+      canvas: []
+    },
+    currentId: ''
   }),
   actions: {
+    initDashboard() {
+      this.dashboard = {
+        id: UUID(),
+        width: '1920',
+        height: '1080',
+        name: UUID(),
+        canvas: []
+      }
+    },
     painting(payload: Canvas) {
       ;(this.dashboard.canvas as Canvas[]).push(payload)
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="plot-list-wrapper">
-    <el-menu class="list-container" :collapse="isCollapse" :default-openeds="defaultOpeneds">
-      <el-sub-menu v-for="plot in plotList" :key="plot.label" :index="plot.label">
+    <ElMenu class="list-container" :collapse="isCollapse" :default-openeds="defaultOpeneds">
+      <ElSubMenu v-for="plot in plotList" :key="plot.label" :index="plot.label">
         <template #title>
           <div class="icon-wrapper">
             <SvgIcon :name="plot.icon" size="22"></SvgIcon>
@@ -14,8 +14,8 @@
             <div>{{ child.label }}</div>
           </div>
         </div>
-      </el-sub-menu>
-    </el-menu>
+      </ElSubMenu>
+    </ElMenu>
     <SvgIcon :name="collapseIcon" size="32" @click="changeCollapse"></SvgIcon>
   </div>
 </template>

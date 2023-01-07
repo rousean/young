@@ -1,0 +1,44 @@
+<template>
+  <svg id="canvas-grid"></svg>
+</template>
+
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useDashboardStore } from '@/stores/dashboard'
+import * as d3 from 'd3'
+const store = useDashboardStore()
+const width = store.dashboard.width
+const height = store.dashboard.height
+onMounted(() => {
+  paintingGrid()
+})
+function paintingGrid() {
+  // 创建svg
+  const svg = d3.select('#canvas-grid').attr('width', width).attr('height', height)
+  // 绘制X轴
+  const xScale = d3.scaleLinear().domain([0, width]).range([0, width])
+  svg
+    .append('g')
+    .call(d3.axisBottom(xScale).ticks(width / 20))
+    .call((g) => g.select('.domain').remove())
+    .call((g) => g.selectAll('.tick line').attr('y2', 0))
+    .call((g) => g.selectAll('.tick line').clone().attr('y2', height).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.8'))
+    .call((g) => g.selectAll('.tick text').remove())
+  const yScale = d3.scaleLinear().domain([0, height]).range([0, height])
+  svg
+    .append('g')
+    .call(d3.axisRight(yScale).ticks(height / 20))
+    .call((g) => g.select('.domain').remove())
+    .call((g) => g.selectAll('.tick line').attr('x2', 0))
+    .call((g) => g.selectAll('.tick line').clone().attr('x2', width).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.8'))
+    .call((g) => g.selectAll('.tick text').remove())
+}
+</script>
+
+<style lang="scss" scoped>
+#canvas-grid {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+</style>

@@ -1,75 +1,60 @@
 <template>
   <ElScrollbar>
-    <div class="painting-container">
-      <div id="painting-bg"></div>
-      <ProxyPlot v-for="plot in store.dashboard.canvas" :key="plot.id" :plot="plot"></ProxyPlot>
+    <div class="canvas-wrapper" :style="{ width: width, height: height }">
+      <CanvasGrid></CanvasGrid>
+      <div><CanvasXAxis></CanvasXAxis></div>
+      <div>
+        <div><CanvasYAxis></CanvasYAxis></div>
+        <div>
+          <ProxyPlot v-for="plot in store.dashboard.canvas" :key="plot.id" :plot="plot"></ProxyPlot>
+        </div>
+      </div>
     </div>
   </ElScrollbar>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
-import { onMounted } from 'vue'
-import * as d3 from 'd3'
 import { ElScrollbar } from 'element-plus'
 
 const ProxyPlot = defineAsyncComponent(() => import('@/components/plot/index.vue'))
+const CanvasXAxis = defineAsyncComponent(() => import('@/views/canvas/canvasXAxis.vue'))
+const CanvasYAxis = defineAsyncComponent(() => import('@/views/canvas/canvasYAxis.vue'))
+
+const CanvasGrid = defineAsyncComponent(() => import('@/views/canvas/canvasGrid.vue'))
 
 const store = useDashboardStore()
-
-onMounted(() => {
-  const width = 3840
-  const height = 2100
-  // 创建svg
-  const svg = d3.select('#painting-bg').append('svg').attr('width', width).attr('height', height).append('g').attr('transform', 'translate(20, 20)')
-  // 绘制X轴
-  const xScale = d3.scaleLinear().domain([0, width]).range([0, width])
-  svg
-    .append('g')
-    .call(d3.axisBottom(xScale).ticks(width / 20))
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('y2', -2).attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick line').clone().attr('y2', height).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.8'))
-    .call((g) => g.selectAll('.tick text').remove())
-  svg
-    .append('g')
-    .call(d3.axisBottom(xScale).ticks(width / 200))
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('y2', -10).attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick text').attr('y', -10).attr('x', 1).attr('text-anchor', 'start').attr('fill', '#b2b2b2'))
-  const yScale = d3
-    .scaleLinear()
-    .domain([0, height])
-    .range([0, height - 20])
-  svg
-    .append('g')
-    .call(d3.axisRight(yScale).ticks(height / 200))
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('x2', -10).attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick text').attr('x', -10).attr('style', 'writing-mode: tb').attr('fill', '#b2b2b2'))
-  svg
-    .append('g')
-    .call(d3.axisRight(yScale).ticks(height / 20))
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('x2', -2).attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick line').clone().attr('x2', width).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.8'))
-    .call((g) => g.selectAll('.tick text').remove())
-})
+const width = computed(() => `${store.dashboard.width}px`)
+const height = computed(() => `${store.dashboard.height}px`)
 </script>
 
 <style lang="scss" scoped>
-.painting-container {
+.canvas-wrapper {
   position: relative;
-  width: 3840px;
-  height: 2110px;
-  padding: 20px;
-  background: #fff;
-  > :nth-child(1) {
-    position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  padding-right: 50px;
+  > :nth-child(2) {
+    position: sticky;
     top: 0;
-    left: 0;
-    z-index: 0;
+    width: 100%;
+    height: 20px;
+    padding-left: 20px;
+    background: #fff;
+    z-index: 100;
+  }
+  > :nth-child(3) {
+    display: flex;
+    > :nth-child(1) {
+      position: sticky;
+      left: 0;
+      width: 20px;
+      height: 100%;
+      background: #fff;
+      z-index: 99;
+    }
   }
 }
 </style>

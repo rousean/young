@@ -30,7 +30,9 @@ const PlotConfig = defineAsyncComponent(() => import('@/views/config/index.vue')
     overflow: hidden;
     > :nth-child(2) {
       flex: 1;
-      // overflow: scroll;
+      overflow: hidden;
+      // margin-bottom: 50px;
+      // margin-right: 50px;
     }
   }
 }

@@ -2,14 +2,14 @@
   <div class="canvas-config">
     <div class="canvas-item">
       <div>画布名称</div>
-      <ElInput placeholder="未命名" v-model="name"></ElInput>
+      <ElInput placeholder="未命名" v-model="store.dashboard.name"></ElInput>
     </div>
     <div class="canvas-item">
       <div>分辨率</div>
       <div>
-        <ElInput v-model="width"></ElInput>
+        <ElInput v-model="store.dashboard.width"></ElInput>
         <div>*</div>
-        <ElInput v-model="height"></ElInput>
+        <ElInput v-model="store.dashboard.height"></ElInput>
       </div>
     </div>
   </div>
@@ -17,10 +17,8 @@
 
 <script setup lang="ts">
 import { ElInput } from 'element-plus'
-import { ref } from 'vue'
-let name = ref<string>('')
-let width = ref<number>(1920)
-let height = ref<number>(1080)
+import { useDashboardStore } from '@/stores/dashboard'
+const store = useDashboardStore()
 </script>
 
 <style lang="scss" scoped>
