@@ -5,18 +5,18 @@
       <ElInput placeholder="未命名" v-model="store.dashboard.name"></ElInput>
     </div>
     <div class="canvas-item">
-      <div>分辨率</div>
-      <div>
-        <ElInput v-model="store.dashboard.width"></ElInput>
-        <div>*</div>
-        <ElInput v-model="store.dashboard.height"></ElInput>
-      </div>
+      <div>画布宽度</div>
+      <ElInputNumber v-model="store.dashboard.width" controls-position="right"></ElInputNumber>
+    </div>
+    <div class="canvas-item">
+      <div>画布高度</div>
+      <ElInputNumber v-model="store.dashboard.height" controls-position="right"></ElInputNumber>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ElInput } from 'element-plus'
+import { ElInput, ElInputNumber } from 'element-plus'
 import { useDashboardStore } from '@/stores/dashboard'
 const store = useDashboardStore()
 </script>
@@ -33,8 +33,6 @@ const store = useDashboardStore()
     }
     > :nth-child(2) {
       flex: 2;
-      display: flex;
-      align-items: center;
     }
   }
 }

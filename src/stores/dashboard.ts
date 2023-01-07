@@ -9,8 +9,8 @@ interface DashboardState {
 // 仪表盘属性
 interface Dashboard {
   readonly id?: string
-  width: string
-  height: string
+  width: number
+  height: number
   name: string
   canvas: Canvas[]
 }
@@ -26,8 +26,8 @@ interface Canvas {
 export const useDashboardStore = defineStore('dashboard', {
   state: (): DashboardState => ({
     dashboard: {
-      width: '1920',
-      height: '1080',
+      width: 1920,
+      height: 1080,
       name: '',
       canvas: []
     },
@@ -37,8 +37,8 @@ export const useDashboardStore = defineStore('dashboard', {
     initDashboard() {
       this.dashboard = {
         id: UUID(),
-        width: '1920',
-        height: '1080',
+        width: 1920,
+        height: 1080,
         name: UUID(),
         canvas: []
       }

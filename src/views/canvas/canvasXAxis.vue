@@ -5,21 +5,25 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
+import { debounce } from '@/util/index'
 import * as d3 from 'd3'
-const store = useDashboardStore()
-const width = store.dashboard.width
 
-store.$subscribe((mutation, state) => {
-  console.log(state.dashboard)
-})
+const store = useDashboardStore()
+
+store.$subscribe(
+  debounce(() => {
+    d3.select('#canvas-x-axis g').remove()
+    const width = store.dashboard.width
+    paintingXAxis(width)
+  }, 500)
+)
 
 onMounted(() => {
-  paintingXAxis()
+  const width = store.dashboard.width
+  paintingXAxis(width)
 })
-function paintingXAxis() {
-  // 创建svg
+function paintingXAxis(width: number): void {
   const svg = d3.select('#canvas-x-axis').attr('width', width).attr('height', 20).append('g').attr('transform', 'translate(0, 20)')
-  // 绘制X轴
   const xScale = d3.scaleLinear().domain([0, width]).range([0, width])
   svg
     .append('g')

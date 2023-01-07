@@ -5,15 +5,23 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
+import { debounce } from '@/util/index'
 import * as d3 from 'd3'
 const store = useDashboardStore()
-const height = store.dashboard.height
+
+store.$subscribe(
+  debounce(() => {
+    d3.select('#canvas-y-axis g').remove()
+    const height = store.dashboard.height
+    paintingYAxis(height)
+  }, 500)
+)
 
 onMounted(() => {
-  paintingYAxis()
+  const height = store.dashboard.height
+  paintingYAxis(height)
 })
-function paintingYAxis() {
-  // 创建svg
+function paintingYAxis(height: number) {
   const svg = d3.select('#canvas-y-axis').attr('width', 20).attr('height', height).append('g').attr('transform', 'translate(20, 0)')
   const yScale = d3.scaleLinear().domain([0, height]).range([0, height])
   svg
