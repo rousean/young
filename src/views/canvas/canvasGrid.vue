@@ -31,17 +31,7 @@ function paintingGrid(width: number, height: number): void {
     .call(d3.axisBottom(xScale).ticks(width / 20))
     .call((g) => g.select('.domain').remove())
     .call((g) => g.selectAll('.tick line').attr('y2', 0))
-    .call((g) =>
-      g
-        .selectAll('.tick line')
-        .clone()
-        .attr('y2', height)
-        .attr('stroke', (d) => {
-          console.log(d)
-          return d % 100 === 0 ? '#dcdfe6' : '#000'
-        })
-        .attr('stroke-opacity', '0.8')
-    )
+    .call((g) => g.selectAll('.tick line').clone().attr('y2', height).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.8'))
     .call((g) => g.selectAll('.tick text').remove())
   const yScale = d3.scaleLinear().domain([0, height]).range([0, height])
   svg
