@@ -22,17 +22,16 @@ import { UUID } from '@/util/index'
 const CanvasXAxis = defineAsyncComponent(() => import('./canvasXAxis.vue'))
 const CanvasYAxis = defineAsyncComponent(() => import('./canvasYAxis.vue'))
 const CanvasGrid = defineAsyncComponent(() => import('./canvasGrid.vue'))
-
 const ProxyPlot = defineAsyncComponent(() => import('@/components/plot/index.vue'))
 
 const store = useDashboardStore()
-const width = computed(() => `${store.dashboard.width + 20}px`)
+const width = computed(() => `${store.dashboard.width + 20}px`) // 盒子宽度加上坐标轴的宽度
 const height = computed(() => `${store.dashboard.height + 20}px`)
 
 const handleDragOver = (e: DragEvent): void => {
   e.preventDefault()
 }
-async function handleDrop(e: DragEvent) {
+async function handleDrop(e: DragEvent): Promise<void> {
   console.log(e)
   e.preventDefault()
   e.stopPropagation()

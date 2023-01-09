@@ -30,16 +30,14 @@ function paintingGrid(width: number, height: number): void {
     .append('g')
     .call(d3.axisBottom(xScale).ticks(width / 20))
     .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('y2', 0))
-    .call((g) => g.selectAll('.tick line').clone().attr('y2', height).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.8'))
     .call((g) => g.selectAll('.tick text').remove())
+    .call((g) => g.selectAll('.tick line').attr('y2', height).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.6'))
   const yScale = d3.scaleLinear().domain([0, height]).range([0, height])
   svg
     .append('g')
     .call(d3.axisRight(yScale).ticks(height / 20))
     .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('x2', 0))
-    .call((g) => g.selectAll('.tick line').clone().attr('x2', width).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.8'))
     .call((g) => g.selectAll('.tick text').remove())
+    .call((g) => g.selectAll('.tick line').attr('x2', width).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.6'))
 }
 </script>

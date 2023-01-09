@@ -3,9 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import type { HSLColor } from 'd3'
-import * as d3 from 'd3'
 import { computed, onMounted } from 'vue'
+import * as d3 from 'd3'
 
 import data from './data'
 

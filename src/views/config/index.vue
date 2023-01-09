@@ -28,9 +28,7 @@ const isCollapse = ref<boolean>(true)
 const width = computed<string>(() => (isCollapse.value ? '0px' : '360px'))
 const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-right' : 'indentation-left'))
 
-const changeCollapse = () => {
-  isCollapse.value = !isCollapse.value
-}
+const changeCollapse = (): boolean => (isCollapse.value = !isCollapse.value)
 </script>
 
 <style lang="scss" scoped>
