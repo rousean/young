@@ -12,15 +12,15 @@ const store = useDashboardStore()
 store.$subscribe(
   debounce(() => {
     d3.select('#canvas-grid g').remove()
-    const width = store.dashboard.width
-    const height = store.dashboard.height
+    const width: number = store.dashboard.width
+    const height: number = store.dashboard.height
     paintingGrid(width, height)
   }, 500)
 )
 
 onMounted(() => {
-  const width = store.dashboard.width
-  const height = store.dashboard.height
+  const width: number = store.dashboard.width
+  const height: number = store.dashboard.height
   paintingGrid(width, height)
 })
 function paintingGrid(width: number, height: number): void {
@@ -31,13 +31,13 @@ function paintingGrid(width: number, height: number): void {
     .call(d3.axisBottom(xScale).ticks(width / 20))
     .call((g) => g.select('.domain').remove())
     .call((g) => g.selectAll('.tick text').remove())
-    .call((g) => g.selectAll('.tick line').attr('y2', height).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.6'))
+    .call((g) => g.selectAll('.tick line').attr('y2', height).attr('fill', '#dcdfe6').attr('stroke-width', '0.2').attr('stroke-opacity', '0.2'))
   const yScale = d3.scaleLinear().domain([0, height]).range([0, height])
   svg
     .append('g')
     .call(d3.axisRight(yScale).ticks(height / 20))
     .call((g) => g.select('.domain').remove())
     .call((g) => g.selectAll('.tick text').remove())
-    .call((g) => g.selectAll('.tick line').attr('x2', width).attr('stroke', '#dcdfe6').attr('stroke-opacity', '0.6'))
+    .call((g) => g.selectAll('.tick line').attr('x2', width).attr('fill', '#dcdfe6').attr('stroke-width', '0.2').attr('stroke-opacity', '0.2'))
 }
 </script>

@@ -35,7 +35,7 @@ const changeCollapse = (): boolean => (isCollapse.value = !isCollapse.value)
 .config-container {
   position: relative;
   width: 360px;
-  border-left: 1px solid #dcdfe6;
+  border-left: 1px solid var(--el-border-color);
   transition: all 0.5s ease-in-out;
   box-shadow: var(--el-box-shadow);
   z-index: 200;
@@ -44,10 +44,13 @@ const changeCollapse = (): boolean => (isCollapse.value = !isCollapse.value)
     top: 50%;
     left: -34px;
     transform: translateY(-50%);
-    border: 1px solid #dcdfe6;
-    cursor: pointer;
-    background: #b3b3b3;
+    border-top: 1px solid var(--el-border-color);
+    border-right: 1px solid var(--el-fill-color-blank);
+    border-bottom: 1px solid var(--el-border-color);
+    border-left: 1px solid var(--el-border-color);
+    background: var(--el-fill-color-light);
     opacity: 0.8;
+    cursor: pointer;
   }
   .config-pane {
     padding: 0 10px;

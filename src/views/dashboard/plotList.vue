@@ -9,14 +9,16 @@
           <span>{{ plot.label }}</span>
         </template>
         <div class="plot-container" @dragstart="handleDragStart">
-          <div class="plot-child" draggable="true" v-for="child in plot.children" :key="child.label" :data-type="child.type">
+          <div class="plot-child" v-for="child in plot.children" :key="child.label" :data-type="child.type" draggable="true">
             <SvgIcon :name="child.icon" size="64"></SvgIcon>
             <div>{{ child.label }}</div>
           </div>
         </div>
       </ElSubMenu>
     </ElMenu>
-    <SvgIcon :name="collapseIcon" size="32" @click="changeCollapse"></SvgIcon>
+    <div>
+      <SvgIcon :name="collapseIcon" size="32" @click="changeCollapse"></SvgIcon>
+    </div>
   </div>
 </template>
 
@@ -27,20 +29,16 @@ import { ElMenu, ElSubMenu } from 'element-plus'
 
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 
-const isCollapse = ref<boolean>(false)
+const isCollapse = ref<boolean>(true)
 
 const defaultOpeneds = computed<string[]>(() => plotList.map((list) => list.label))
 const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-right' : 'indentation-left'))
 
 const changeCollapse = (): boolean => (isCollapse.value = !isCollapse.value)
 
-function handleDragStart(e: DragEvent) {
+function handleDragStart(e: DragEvent): void {
   e.dataTransfer!.setData('type', (e.target as HTMLElement).dataset.type as string)
 }
-
-// const handleDragend = async (e: DragEvent): Promise<void> => {
-//   const type = (e.target as HTMLElement).dataset.type as string
-// }
 </script>
 
 <style lang="scss" scoped>
@@ -49,18 +47,22 @@ function handleDragStart(e: DragEvent) {
   flex-direction: column;
   align-items: center;
   height: 100%;
-  border-right: 1px solid #dcdfe6;
+  background: var(--el-fill-color-lighter);
+  border-right: 1px solid var(--el-border-color);
   > :nth-child(1) {
     flex: 1;
     overflow: auto;
   }
 
   > :nth-child(2) {
+    width: 100%;
+    text-align: center;
+    background: var(--el-fill-color-light);
     cursor: pointer;
   }
 
   .list-container:not(.el-menu--collapse) {
-    width: 230px;
+    width: 240px;
   }
 
   .icon-wrapper {
@@ -69,6 +71,7 @@ function handleDragStart(e: DragEvent) {
   }
 
   :deep(.el-menu) {
+    background: var(--el-fill-color-light);
     border-right: 0;
   }
 
@@ -88,23 +91,23 @@ function handleDragStart(e: DragEvent) {
 .plot-container {
   display: flex;
   flex-wrap: wrap;
-  width: 230px;
+  width: 240px;
   margin-top: 5px;
   overflow: auto;
 
   .plot-child {
     display: inline-block;
-    width: 75px;
+    width: 80px;
+    height: 80px;
     margin-bottom: 10px;
     text-align: center;
     cursor: pointer;
 
     > :nth-child(1) {
-      border: 1px solid #eee;
+      border: 1px solid var(--el-border-color);
     }
 
     > :nth-child(2) {
-      margin-top: 5px;
       font-size: 12px;
     }
   }

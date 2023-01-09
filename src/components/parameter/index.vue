@@ -11,5 +11,5 @@ const props = defineProps({
   }
 })
 
-const currentComponent = defineAsyncComponent(() => import(/* @vite-ignore */ `./${props.config.type}/index.vue`))
+const currentComponent = defineAsyncComponent(() => import(`./${props.config.type}/index.vue`))
 </script>

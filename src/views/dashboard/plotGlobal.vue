@@ -26,7 +26,7 @@ const back = () => router.push('/layout')
   justify-content: space-between;
   align-items: center;
   height: 40px;
-  border-bottom: 1px solid #dcdfe6;
+  border-bottom: 1px solid var(--el-border-color);
   font-size: 14px;
   cursor: pointer;
   > :nth-child(1) {

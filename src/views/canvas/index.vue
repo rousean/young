@@ -5,9 +5,7 @@
       <CanvasXAxis></CanvasXAxis>
       <div @drop="handleDrop" @dragover="handleDragOver">
         <CanvasYAxis></CanvasYAxis>
-        <div>
-          <ProxyPlot v-for="plot in store.dashboard.canvas" :key="plot.id" :plot="plot"></ProxyPlot>
-        </div>
+        <CanvasPaint></CanvasPaint>
       </div>
     </div>
   </ElScrollbar>
@@ -22,29 +20,33 @@ import { UUID } from '@/util/index'
 const CanvasXAxis = defineAsyncComponent(() => import('./canvasXAxis.vue'))
 const CanvasYAxis = defineAsyncComponent(() => import('./canvasYAxis.vue'))
 const CanvasGrid = defineAsyncComponent(() => import('./canvasGrid.vue'))
-const ProxyPlot = defineAsyncComponent(() => import('@/components/plot/index.vue'))
+const CanvasPaint = defineAsyncComponent(() => import('./canvasPaint.vue'))
 
 const store = useDashboardStore()
+
 const width = computed(() => `${store.dashboard.width + 20}px`) // 盒子宽度加上坐标轴的宽度
 const height = computed(() => `${store.dashboard.height + 20}px`)
 
-const handleDragOver = (e: DragEvent): void => {
-  e.preventDefault()
-}
-async function handleDrop(e: DragEvent): Promise<void> {
+// 拖拽经过事件
+const handleDragOver = (e: DragEvent): void => e.preventDefault()
+
+// 拖拽放置事件
+const handleDrop = async (e: DragEvent): Promise<void> => {
   console.log(e)
   e.preventDefault()
   e.stopPropagation()
   const type = e.dataTransfer!.getData('type')
-  const offsetX = e.offsetX
-  const offsetY = e.offsetY
+  const offsetX = e.offsetX - 40 <= 0 ? 0 : e.offsetX - 40
+  const offsetY = e.offsetY - 40 <= 0 ? 0 : e.offsetY - 40
   const style = await import(`../../components/plot/${type}/style.ts`)
+  const data = await import(`../../components/plot/${type}/data.ts`)
   store.painting({
-    type,
     id: UUID(),
+    type,
     x: offsetX,
     y: offsetY,
-    style: style.default
+    style: style.default,
+    data: data.default
   })
 }
 </script>
@@ -56,6 +58,7 @@ async function handleDrop(e: DragEvent): Promise<void> {
   flex-direction: column;
   padding-bottom: 50px;
   padding-right: 50px;
+  background: var(--el-fill-color-lighter);
   > :nth-child(1) {
     position: absolute;
     top: 20px;
@@ -66,10 +69,9 @@ async function handleDrop(e: DragEvent): Promise<void> {
   > :nth-child(2) {
     position: sticky;
     top: 0;
-    display: flex;
     padding-left: 20px;
-    background: #fff;
-    z-index: 100;
+    background: var(--el-fill-color-lighter);
+    z-index: 1;
   }
 
   > :nth-child(3) {
@@ -77,15 +79,13 @@ async function handleDrop(e: DragEvent): Promise<void> {
 
     > :nth-child(1) {
       position: sticky;
-      display: flex;
       left: 0;
-      background: #fff;
-      z-index: 99;
+      background: var(--el-fill-color-lighter);
+      z-index: 1;
     }
+
     > :nth-child(2) {
-      position: relative;
       flex: 1;
-      z-index: 101;
     }
   }
 }

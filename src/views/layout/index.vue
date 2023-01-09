@@ -27,5 +27,3 @@ const createDashboard = () => {
   router.push('/dashboard')
 }
 </script>
-
-<style lang="scss" scoped></style>

@@ -52,7 +52,7 @@ const configure = ref([
 <style lang="scss" scoped>
 .no-config {
   padding: 0 15px;
-  color: #999;
+  color: var(--el-fill-color-light);
   font-size: 12px;
 }
 

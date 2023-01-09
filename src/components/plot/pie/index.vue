@@ -1,5 +1,5 @@
 <template>
-  <div :id="ID"></div>
+  <svg :id="id"></svg>
 </template>
 
 <script setup lang="ts">
@@ -15,7 +15,7 @@ const props = defineProps({
   }
 })
 
-const ID = computed(() => `Young-${props.plot.id}`)
+const id = computed(() => `Young-${props.plot.id}`)
 
 interface Option {
   id: string
@@ -68,7 +68,6 @@ class Pie {
   createElement() {
     this.svg = d3
       .select(`#${this.id}`)
-      .append('svg')
       .attr('width', this.width)
       .attr('height', this.height)
       .append('g')
@@ -133,7 +132,7 @@ class Pie {
 }
 onMounted(() => {
   new Pie({
-    id: ID.value,
+    id: id.value,
     data
   })
 })
