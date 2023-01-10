@@ -3,7 +3,7 @@ import { UUID } from '@/util/index'
 // 当前store
 interface DashboardState {
   dashboard: Dashboard
-  id: string
+  canvas: Partial<Canvas>
 }
 
 // 仪表盘属性
@@ -40,7 +40,7 @@ export const useDashboardStore = defineStore('dashboard', {
       name: '',
       canvas: []
     },
-    id: ''
+    canvas: {}
   }),
   actions: {
     // 初始化仪表盘
@@ -58,22 +58,24 @@ export const useDashboardStore = defineStore('dashboard', {
       ;(this.dashboard.canvas as Canvas[]).push(payload)
     },
     setStyle(payload: { [prop: string]: any }) {
-      const canvas = this.dashboard.canvas.find((c) => c.id === this.id) as Canvas
       for (const key in payload) {
-        canvas.style[key] = payload[key]
+        ;(this.canvas as Canvas).style[key] = payload[key]
       }
     },
     setPosition(x: number, y: number) {
-      const canvas = this.dashboard.canvas.find((c) => c.id === this.id) as Canvas
-      canvas.x = x
-      canvas.y = y
+      this.canvas.x = x
+      this.canvas.y = y
     },
     getPosition() {
-      const { x, y } = this.dashboard.canvas.find((c) => c.id === this.id) as Canvas
+      const { x, y } = this.canvas as Canvas
       return { x, y }
     },
-    setId(id: string) {
-      this.id = id.replace('Young-', '')
+    setCanvas(id: string) {
+      if (id) {
+        this.canvas = this.dashboard.canvas.find((c) => c.id === id.replace('Young-', '')) as Canvas
+      } else {
+        this.canvas = {}
+      }
     }
   }
 })

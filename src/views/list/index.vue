@@ -23,9 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import { plotList } from './list'
 import { computed, defineAsyncComponent, ref } from 'vue'
 import { ElMenu, ElSubMenu } from 'element-plus'
+import { plotList } from './list'
 
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 
@@ -72,9 +72,8 @@ function handleDragStart(e: DragEvent): void {
 
   :deep(.el-menu) {
     background: var(--el-fill-color-light);
-    border-right: 0;  
+    border-right: 0;
   }
-
 
   :deep(.el-menu:not(.el-menu--collapse)) {
     .el-sub-menu__icon-arrow {

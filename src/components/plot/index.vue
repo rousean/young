@@ -23,7 +23,7 @@ const border = computed(() => (props.plot.id === store.id ? '1px dashed var(--el
   position: absolute;
   top: v-bind(top);
   left: v-bind(left);
-  border: v-bind(border);
+  // border: v-bind(border);
   cursor: move;
 }
 </style>

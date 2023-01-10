@@ -15,7 +15,7 @@ import { useDashboardStore } from '@/stores/dashboard'
 import { ElTabs, ElTabPane, ElButton } from 'element-plus'
 import type { TabsPaneContext } from 'element-plus'
 
-const activeName = ref('1')
+const activeName = ref<string>('1')
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event)

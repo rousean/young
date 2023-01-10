@@ -3,17 +3,25 @@
     <div @click="back">
       <SvgIcon name="return" size="32"></SvgIcon>
     </div>
-    <div class="btn">
-      <ElButton>预览</ElButton>
-      <ElButton type="primary" plain>保存</ElButton>
+    <ElButton>撤销</ElButton>
+    <ElButton>重做</ElButton>
+    <ElButton>锁定</ElButton>
+    <ElButton>解锁</ElButton>
+    <ElButton>编组</ElButton>
+    <ElButton>解组</ElButton>
+    <ElButton>预览</ElButton>
+    <div style="display:flex">
+      <span>图层</span>
+      <ElInput></ElInput>
     </div>
+    <ElButton type="primary" plain>保存</ElButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElButton } from 'element-plus'
+import { ElButton, ElInput } from 'element-plus'
 
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 const router = useRouter()
@@ -23,7 +31,7 @@ const back = () => router.push('/layout')
 <style lang="scss" scoped>
 .global-config {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
   height: 40px;
   border-bottom: 1px solid var(--el-border-color);
