@@ -45,7 +45,8 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
     x: offsetX,
     y: offsetY,
     style: JSON.parse(JSON.stringify(style.default)),
-    data: data.default
+    data: data.default,
+    zIndex: 1
   })
 }
 </script>

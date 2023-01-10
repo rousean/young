@@ -27,6 +27,7 @@ interface Canvas {
   type: string
   x: number
   y: number
+  zIndex: number
   data: any
   style: Style
 }

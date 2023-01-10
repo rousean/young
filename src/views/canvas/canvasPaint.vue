@@ -21,6 +21,7 @@ const store = useDashboardStore()
 const handleContextmenu = (e: MouseEvent) => {
   e.stopPropagation()
   e.preventDefault()
+  if (!store.canvas.id) return
   emitter.emit('context-show', { show: true, x: `${(store.canvas.x || 0) + e.offsetX}px`, y: `${(store.canvas.y || 0) + e.offsetY}px` })
 }
 
