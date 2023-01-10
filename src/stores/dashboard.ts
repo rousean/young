@@ -57,12 +57,18 @@ export const useDashboardStore = defineStore('dashboard', {
     painting(payload: Canvas) {
       ;(this.dashboard.canvas as Canvas[]).push(payload)
     },
-    setStyle(x: number, y: number) {
+    setStyle(payload: { [prop: string]: any }) {
+      const canvas = this.dashboard.canvas.find((c) => c.id === this.id) as Canvas
+      for (const key in payload) {
+        canvas.style[key] = payload[key]
+      }
+    },
+    setPosition(x: number, y: number) {
       const canvas = this.dashboard.canvas.find((c) => c.id === this.id) as Canvas
       canvas.x = x
       canvas.y = y
     },
-    getStyle() {
+    getPosition() {
       const { x, y } = this.dashboard.canvas.find((c) => c.id === this.id) as Canvas
       return { x, y }
     },

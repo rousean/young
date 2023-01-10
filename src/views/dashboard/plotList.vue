@@ -72,8 +72,9 @@ function handleDragStart(e: DragEvent): void {
 
   :deep(.el-menu) {
     background: var(--el-fill-color-light);
-    border-right: 0;
+    border-right: 0;  
   }
+
 
   :deep(.el-menu:not(.el-menu--collapse)) {
     .el-sub-menu__icon-arrow {
@@ -94,6 +95,7 @@ function handleDragStart(e: DragEvent): void {
   width: 240px;
   margin-top: 5px;
   overflow: auto;
+  // background: var(--el-fill-color-light);
 
   .plot-child {
     display: inline-block;

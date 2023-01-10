@@ -33,7 +33,6 @@ const handleDragOver = (e: DragEvent): void => e.preventDefault()
 // 拖拽放置事件
 const handleDrop = async (e: DragEvent): Promise<void> => {
   console.log(e)
-  e.preventDefault()
   e.stopPropagation()
   const type = e.dataTransfer!.getData('type')
   const offsetX = e.offsetX - 40 <= 0 ? 0 : e.offsetX - 40
@@ -45,7 +44,7 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
     type,
     x: offsetX,
     y: offsetY,
-    style: style.default,
+    style: JSON.parse(JSON.stringify(style.default)),
     data: data.default
   })
 }
@@ -71,7 +70,7 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
     top: 0;
     padding-left: 20px;
     background: var(--el-fill-color-lighter);
-    z-index: 1;
+    z-index: 11;
   }
 
   > :nth-child(3) {
@@ -81,7 +80,7 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
       position: sticky;
       left: 0;
       background: var(--el-fill-color-lighter);
-      z-index: 1;
+      z-index: 11;
     }
 
     > :nth-child(2) {

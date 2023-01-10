@@ -17,17 +17,20 @@ const store = useDashboardStore()
 // 鼠标按下事件
 const handleMouseDown = (e: MouseEvent): void => {
   e.stopPropagation() // 阻止捕获和冒泡阶段中当前事件的进一步传播
-  console.log(e)
   const id: string = (e.target as HTMLElement).id
-  if (!id) return
+  if (!id) {
+    store.setId('')
+    return
+  }
   store.setId(id)
-  const { x, y } = store.getStyle()
-  const clientX: number = e.clientX
-  const clientY: number = e.clientY
+  const { x, y } = store.getPosition()
+  const startX: number = e.clientX
+  const startY: number = e.clientY
+
   const move = (e: MouseEvent): void => {
     const currX: number = e.clientX
     const currY: number = e.clientY
-    store.setStyle(currX - clientX + x, currY - clientY + y)
+    store.setPosition(currX - startX + x, currY - startY + y)
   }
   const up = (): void => {
     document.removeEventListener('mousemove', move)
