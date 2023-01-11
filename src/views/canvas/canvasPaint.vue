@@ -3,7 +3,7 @@
     <CanvasContext></CanvasContext>
     <template v-for="plot in store.dashboard.canvas" :key="plot.id">
       <CanvasPoint v-if="plot.id === store.canvas.id" :plot="plot"></CanvasPoint>
-      <ProxyPlot :plot="plot"></ProxyPlot>
+      <ProxyYoung :plot="plot"></ProxyYoung>
     </template>
   </div>
 </template>
@@ -13,7 +13,7 @@ import { defineAsyncComponent } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
 import emitter from '@/mitt/index'
 
-const ProxyPlot = defineAsyncComponent(() => import('@/components/plot/index.vue'))
+const ProxyYoung = defineAsyncComponent(() => import('@/components/young/index.vue'))
 const CanvasPoint = defineAsyncComponent(() => import('./canvasPoint.vue'))
 const CanvasContext = defineAsyncComponent(() => import('./canvasContext.vue'))
 const store = useDashboardStore()

@@ -1,8 +1,9 @@
 <template>
   <ElTabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="仪表盘管理" name="1">
+    <ElTabPane label="仪表盘管理" name="1">
       <ElButton @click="createDashboard">新建仪表盘</ElButton>
-    </el-tab-pane>
+    </ElTabPane>
+    <ElTabPane label="配置管理" name="2"></ElTabPane>
   </ElTabs>
 </template>
 

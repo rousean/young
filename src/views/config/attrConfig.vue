@@ -1,7 +1,7 @@
 <template>
   <ElCollapse v-if="configure">
     <ElCollapseItem v-for="item in configure" :key="item.label" :title="item.label" :name="item.label">
-      <ProxyParameter v-for="child in item.children" :key="child.label" :config="child"></ProxyParameter>
+      <ProxyAttribute v-for="child in item.children" :key="child.label" :config="child"></ProxyAttribute>
     </ElCollapseItem>
   </ElCollapse>
   <div class="no-config" v-else>暂无高级参数配置</div>
@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
-const ProxyParameter = defineAsyncComponent(() => import('@/components/parameter/index.vue'))
+const ProxyAttribute = defineAsyncComponent(() => import('@/components/attribute/index.vue'))
 
 const configure = ref([
   {

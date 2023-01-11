@@ -8,10 +8,11 @@ interface DashboardState {
 
 // 仪表盘属性
 interface Dashboard {
-  id?: string
+  id: string
   width: number
   height: number
   name: string
+  scale: number
   canvas: Canvas[]
 }
 
@@ -38,7 +39,8 @@ export const useDashboardStore = defineStore('dashboard', {
       id: UUID(),
       width: 1920,
       height: 1080,
-      name: '',
+      scale: 1,
+      name: UUID(),
       canvas: []
     },
     canvas: {}
@@ -50,9 +52,11 @@ export const useDashboardStore = defineStore('dashboard', {
         id: UUID(),
         width: 1920,
         height: 1080,
+        scale: 1,
         name: UUID(),
         canvas: []
       }
+      this.canvas = {}
     },
     // 绘制图表
     painting(payload: Canvas) {

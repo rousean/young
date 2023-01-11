@@ -5,8 +5,8 @@
       <ElTabPane label="画布配置">
         <CanvasConfig class="config-pane"></CanvasConfig>
       </ElTabPane>
-      <ElTabPane label="高级参数">
-        <ParamConfig></ParamConfig>
+      <ElTabPane label="属性配置">
+        <AttrConfig></AttrConfig>
       </ElTabPane>
       <ElTabPane label="数据管理">
         <DataConfig class="config-pane"></DataConfig>
@@ -20,13 +20,13 @@ import { computed, defineAsyncComponent, ref } from 'vue'
 import { ElTabs, ElTabPane } from 'element-plus'
 
 const CanvasConfig = defineAsyncComponent(() => import('./canvasConfig.vue'))
-const ParamConfig = defineAsyncComponent(() => import('./paramConfig.vue'))
+const AttrConfig = defineAsyncComponent(() => import('./attrConfig.vue'))
 const DataConfig = defineAsyncComponent(() => import('./dataConfig.vue'))
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 
 const isCollapse = ref<boolean>(true)
 const width = computed<string>(() => (isCollapse.value ? '0px' : '360px'))
-const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-right' : 'indentation-left'))
+const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-left' : 'indentation-right'))
 
 const changeCollapse = (): boolean => (isCollapse.value = !isCollapse.value)
 </script>

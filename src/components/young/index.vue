@@ -15,7 +15,7 @@ const props = defineProps({
 const currentComponent = defineAsyncComponent(() => import(`./${props.plot.type}/index.vue`))
 const left = computed(() => `${props.plot.x}px`)
 const top = computed(() => `${props.plot.y}px`)
-const border = computed(() => (props.plot.id === store.id ? '1px dashed var(--el-color-primary)' : ''))
+const border = computed(() => (props.plot.id === store.canvas.id ? '1px dashed var(--el-color-primary)' : ''))
 </script>
 
 <style lang="scss" scoped>

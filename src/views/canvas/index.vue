@@ -1,6 +1,6 @@
 <template>
   <ElScrollbar>
-    <div class="canvas-wrapper" :style="{ width: width, height: height }">
+    <div class="canvas-wrapper">
       <CanvasGrid></CanvasGrid>
       <CanvasXAxis></CanvasXAxis>
       <div @drop="handleDrop" @dragover="handleDragOver">
@@ -27,6 +27,9 @@ const store = useDashboardStore()
 const width = computed(() => `${store.dashboard.width + 20}px`) // 盒子宽度加上坐标轴的宽度
 const height = computed(() => `${store.dashboard.height + 20}px`)
 
+const scale = computed(() => store.dashboard.scale)
+const sticky = computed(() => (scale.value > 1 ? 'static' : 'sticky'))
+
 // 拖拽经过事件
 const handleDragOver = (e: DragEvent): void => e.preventDefault()
 
@@ -37,8 +40,8 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
   const type = e.dataTransfer!.getData('type')
   const offsetX = e.offsetX - 40 <= 0 ? 0 : e.offsetX - 40
   const offsetY = e.offsetY - 40 <= 0 ? 0 : e.offsetY - 40
-  const style = await import(`../../components/plot/${type}/style.ts`)
-  const data = await import(`../../components/plot/${type}/data.ts`)
+  const style = await import(`../../components/young/${type}/style.ts`)
+  const data = await import(`../../components/young/${type}/data.ts`)
   store.painting({
     id: UUID(),
     type,
@@ -56,9 +59,13 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
   position: relative;
   display: flex;
   flex-direction: column;
+  width: v-bind(width);
+  height: v-bind(height);
   padding-bottom: 50px;
   padding-right: 50px;
   background: var(--el-fill-color-lighter);
+  transform-origin: 0 0;
+  transform: scale(v-bind(scale));
   > :nth-child(1) {
     position: absolute;
     top: 20px;
@@ -67,7 +74,7 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
   }
 
   > :nth-child(2) {
-    position: sticky;
+    position: v-bind(sticky);
     top: 0;
     padding-left: 20px;
     background: var(--el-fill-color-lighter);
@@ -78,7 +85,7 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
     display: flex;
 
     > :nth-child(1) {
-      position: sticky;
+      position: v-bind(sticky);
       left: 0;
       background: var(--el-fill-color-lighter);
       z-index: 11;
