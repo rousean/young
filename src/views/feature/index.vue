@@ -4,21 +4,21 @@
       <SvgIcon name="return" size="32"></SvgIcon>
     </div>
     <div>
-      <div class="input-wrapper">
+      <div class="input-wrapper" v-show="store.canvas.id">
         <div>X坐标</div>
-        <ElInputNumber v-model="store.canvas.x" controls-position="right" :min="0" :max="max"></ElInputNumber>
+        <ElInputNumber v-model="store.canvas.x" :value-on-clear="0" controls-position="right" :min="0" :max="max"></ElInputNumber>
       </div>
-      <div class="input-wrapper">
+      <div class="input-wrapper" v-show="store.canvas.id">
         <div>Y坐标</div>
-        <ElInputNumber v-model="store.canvas.y" controls-position="right" :min="0" :max="max"></ElInputNumber>
+        <ElInputNumber v-model="store.canvas.y" :value-on-clear="0" controls-position="right" :min="0" :max="max"></ElInputNumber>
       </div>
-      <div class="input-wrapper">
+      <div class="input-wrapper" v-show="store.canvas.id">
         <div>图层</div>
-        <ElInputNumber v-model="store.canvas.zIndex" controls-position="right" :min="1" :max="10"></ElInputNumber>
+        <ElInputNumber v-model="store.canvas.zIndex" :value-on-clear="1" controls-position="right" :min="1" :max="10"></ElInputNumber>
       </div>
       <div class="input-wrapper">
         <div>缩放</div>
-        <ElInputNumber v-model="store.dashboard.scale" controls-position="right" :step="0.1" :min="0.4"></ElInputNumber>
+        <ElInputNumber v-model="store.dashboard.scale" :value-on-clear="1" controls-position="right" :step="0.1" :min="0.4"></ElInputNumber>
       </div>
     </div>
     <div>
@@ -28,6 +28,7 @@
       <ElTooltip content="重做" placement="bottom" effect="light">
         <ElButton><SvgIcon name="unrevoke" size="20"></SvgIcon></ElButton>
       </ElTooltip>
+      <ElDivider direction="vertical" border-style="dashed"></ElDivider>
       <ElTooltip content="锁定" placement="bottom" effect="light">
         <ElButton><SvgIcon name="lock" size="20"></SvgIcon></ElButton>
       </ElTooltip>
@@ -59,7 +60,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElButton, ElInputNumber, ElTooltip } from 'element-plus'
+import { ElButton, ElInputNumber, ElTooltip, ElDivider } from 'element-plus'
 
 import { useDashboardStore } from '@/stores/dashboard'
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
@@ -78,6 +79,7 @@ const back = () => router.push('/layout')
 .feature-wrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 40px;
   border-bottom: 1px solid var(--el-border-color);
   font-size: 14px;
@@ -103,6 +105,7 @@ const back = () => router.push('/layout')
   > :nth-child(3) {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     padding-right: 5px;
     flex: 1;
   }

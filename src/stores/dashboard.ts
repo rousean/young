@@ -60,6 +60,7 @@ export const useDashboardStore = defineStore('dashboard', {
     },
     // 绘制图表
     painting(payload: Canvas) {
+      this.canvas = payload
       ;(this.dashboard.canvas as Canvas[]).push(payload)
     },
     setStyle(payload: { [prop: string]: any }) {
