@@ -14,6 +14,7 @@
     "@types/d3": "^7.4.0",
     "d3": "^7.8.0",
     "element-plus": "^2.2.27",
+    "lodash": "^4.17.21",
     "mitt": "^3.0.0",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
+    "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.12",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vitejs/plugin-vue-jsx": "^3.0.0",

@@ -16,6 +16,7 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
 import { ElScrollbar } from 'element-plus'
 import { UUID } from '@/util/index'
+import { cloneDeep } from 'lodash'
 
 const CanvasXAxis = defineAsyncComponent(() => import('./canvasXAxis.vue'))
 const CanvasYAxis = defineAsyncComponent(() => import('./canvasYAxis.vue'))
@@ -47,8 +48,8 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
     type,
     x: offsetX,
     y: offsetY,
-    style: JSON.parse(JSON.stringify(style.default)),
-    data: data.default,
+    style: cloneDeep(style.default),
+    data: cloneDeep(data.default),
     zIndex: 1
   })
 }

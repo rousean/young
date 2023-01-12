@@ -1,6 +1,7 @@
 // 返回UUID
 export const UUID = (): string => crypto.randomUUID()
 
+// 防抖函数
 export const debounce = <T extends (...args: any) => any>(fn: T, time?: number, immediate?: boolean): ((...args: any) => any) => {
   let timeoutId: null | number
   let defaultImmediate = immediate || false
