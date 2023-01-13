@@ -24,6 +24,7 @@ const border = computed(() => (props.plot.id === store.canvas.id ? '1px dashed v
   top: v-bind(top);
   left: v-bind(left);
   border: 1px solid red;
+  // box-sizing: border-box;
   cursor: move;
 }
 </style>

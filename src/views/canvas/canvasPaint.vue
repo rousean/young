@@ -40,10 +40,12 @@ const handleMouseDown = (e: MouseEvent): void => {
   const { x, y } = store.getPosition()
   const startX: number = e.clientX
   const startY: number = e.clientY
+  console.log(e)
 
   const move = (e: MouseEvent): void => {
     const currX: number = e.clientX
     const currY: number = e.clientY
+    console.log(currX - startX+x, currY - startY)
     store.setPosition(currX - startX + x, currY - startY + y)
   }
   const up = (): void => {

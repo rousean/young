@@ -8,7 +8,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 export default defineConfig({
   server: {
-    port: 8091,
+    port: 8888,
     open: true
   },
   plugins: [

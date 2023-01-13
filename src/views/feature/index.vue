@@ -6,11 +6,11 @@
     <div>
       <div class="input-wrapper" v-show="store.canvas.id">
         <div>X坐标</div>
-        <ElInputNumber v-model="store.canvas.x" :value-on-clear="0" controls-position="right" :min="0" :max="max"></ElInputNumber>
+        <ElInputNumber v-model="store.canvas.x" :value-on-clear="0" controls-position="right" :min="0" :max="maxX"></ElInputNumber>
       </div>
       <div class="input-wrapper" v-show="store.canvas.id">
         <div>Y坐标</div>
-        <ElInputNumber v-model="store.canvas.y" :value-on-clear="0" controls-position="right" :min="0" :max="max"></ElInputNumber>
+        <ElInputNumber v-model="store.canvas.y" :value-on-clear="0" controls-position="right" :min="0" :max="maxY"></ElInputNumber>
       </div>
       <div class="input-wrapper" v-show="store.canvas.id">
         <div>图层</div>
@@ -67,8 +67,12 @@ const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vu
 
 const store = useDashboardStore()
 
-const max = computed(() => {
-  return (store.dashboard.width || 0) - (store.canvas.x || 0)
+const maxX = computed(() => {
+  return (store.dashboard.width || 0) - (store.canvas.style?.width || 0)
+})
+
+const maxY = computed(() => {
+  return (store.dashboard.height || 0) - (store.canvas.style?.height || 0)
 })
 
 const router = useRouter()

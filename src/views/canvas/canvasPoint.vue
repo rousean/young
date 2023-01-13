@@ -12,12 +12,12 @@ const props = defineProps({
   }
 })
 const store = useDashboardStore()
-const offset: number = 2.5
 
-const width = computed(() => `${(props.plot.style.width - 20 - 4) / 2}px`)
-const height = computed(() => `${(props.plot.style.height - 20 - 4) / 2}px`)
-const x = computed(() => `${-(props.plot.style.width - 20 - 4) / 2}px`)
-const y = computed(() => `${-(props.plot.style.height - 20 - 4) / 2}px`)
+const pos = computed(() => {
+  const width = (props.plot.style.width - 20 - 4) / 2
+  const height = (props.plot.style.height - 20 - 4) / 2
+  return { width: `${width}px`, height: `${height}px`, x: `${-width}px`, y: `${-height}px` }
+})
 
 interface Point {
   id: string
@@ -29,10 +29,11 @@ interface Point {
   }
 }
 const points = computed(() => {
-  const x: number = props.plot.x
-  const y: number = props.plot.y
+  const x: number = Math.floor(props.plot.x)
+  const y: number = Math.floor(props.plot.y)
   const width: number = props.plot.style.width
   const height: number = props.plot.style.height
+  const offset: number = 2
   return [
     {
       id: 'left-top',
@@ -40,6 +41,33 @@ const points = computed(() => {
       style: {
         top: `${y - offset}px`,
         left: `${x - offset}px`,
+        cursor: 'nwse-resize'
+      }
+    },
+    {
+      id: 'right-top',
+      class: 'point-circle',
+      style: {
+        top: `${y - offset}px`,
+        left: `${x + width - offset}px`,
+        cursor: 'nesw-resize'
+      }
+    },
+    {
+      id: 'left-bottom',
+      class: 'point-circle',
+      style: {
+        top: `${y + height - offset}px`,
+        left: `${x - offset}px`,
+        cursor: 'nesw-resize'
+      }
+    },
+    {
+      id: 'right-bottom',
+      class: 'point-circle',
+      style: {
+        top: `${y + height - offset}px`,
+        left: `${x + width - offset}px`,
         cursor: 'nwse-resize'
       }
     },
@@ -53,12 +81,12 @@ const points = computed(() => {
       }
     },
     {
-      id: 'right-top',
-      class: 'point-circle',
+      id: 'bottom-middle',
+      class: 'point-x-bottom',
       style: {
-        top: `${y - offset}px`,
-        left: `${x + width + 1 - offset}px`,
-        cursor: 'nesw-resize'
+        top: `${y + height - offset}px`,
+        left: `${x + width / 2 - 10}px`,
+        cursor: 'row-resize'
       }
     },
     {
@@ -75,35 +103,8 @@ const points = computed(() => {
       class: 'point-y-bottom',
       style: {
         top: `${y + height / 2 - 10}px`,
-        left: `${x + width + 1 - offset}px`,
+        left: `${x + width - offset}px`,
         cursor: 'col-resize'
-      }
-    },
-    {
-      id: 'left-bottom',
-      class: 'point-circle',
-      style: {
-        top: `${y + height - offset}px`,
-        left: `${x - offset}px`,
-        cursor: 'nesw-resize'
-      }
-    },
-    {
-      id: 'bottom-middle',
-      class: 'point-x-bottom',
-      style: {
-        top: `${y + height + 1 - offset}px`,
-        left: `${x + width / 2 - 10}px`,
-        cursor: 'row-resize'
-      }
-    },
-    {
-      id: 'right-bottom',
-      class: 'point-circle',
-      style: {
-        top: `${y + height + 1 - offset}px`,
-        left: `${x + width + 1 - offset}px`,
-        cursor: 'nwse-resize'
       }
     }
   ]
@@ -168,26 +169,26 @@ const handleMouseDown = (e: MouseEvent, point: Point) => {
 .point-x-bottom::after {
   content: '';
   position: absolute;
-  width: v-bind(width);
+  width: v-bind('pos.width');
   height: 0;
   border-top: 1px dashed var(--el-color-primary);
 }
 
 .point-x-top::before {
   bottom: 2px;
-  left: v-bind(x);
+  left: v-bind('pos.x');
 }
 .point-x-top::after {
   bottom: 2px;
-  right: v-bind(x);
+  right: v-bind('pos.x');
 }
 .point-x-bottom::before {
   top: 2px;
-  left: v-bind(x);
+  left: v-bind('pos.x');
 }
 .point-x-bottom::after {
   top: 2px;
-  right: v-bind(x);
+  right: v-bind('pos.x');
 }
 .point-y-top,
 .point-y-bottom {
@@ -201,24 +202,24 @@ const handleMouseDown = (e: MouseEvent, point: Point) => {
 .point-y-bottom::after {
   content: '';
   position: absolute;
-  height: v-bind(height);
+  height: v-bind('pos.height');
   width: 0;
   border-left: 1px dashed var(--el-color-primary);
 }
 .point-y-top::before {
   right: 2px;
-  top: v-bind(y);
+  top: v-bind('pos.y');
 }
 .point-y-top::after {
   right: 2px;
-  bottom: v-bind(y);
+  bottom: v-bind('pos.y');
 }
 .point-y-bottom::before {
   left: 2px;
-  top: v-bind(y);
+  top: v-bind('pos.y');
 }
 .point-y-bottom::after {
   left: 2px;
-  bottom: v-bind(y);
+  bottom: v-bind('pos.y');
 }
 </style>
