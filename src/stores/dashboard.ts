@@ -29,6 +29,8 @@ interface Canvas {
   x: number
   y: number
   zIndex: number
+  rotate: number
+  context: boolean
   data: any
   style: Style
 }
@@ -80,6 +82,7 @@ export const useDashboardStore = defineStore('dashboard', {
       if (id) {
         this.canvas = this.dashboard.canvas.find((c) => c.id === id.replace('Young-', '')) as Canvas
       } else {
+        this.canvas.context = false
         this.canvas = {}
       }
     }

@@ -15,6 +15,7 @@ const props = defineProps({
 const currentComponent = defineAsyncComponent(() => import(`./${props.plot.type}/index.vue`))
 const left = computed(() => `${props.plot.x}px`)
 const top = computed(() => `${props.plot.y}px`)
+const rotate = computed(() => `${props.plot.rotate}deg`)
 const border = computed(() => (props.plot.id === store.canvas.id ? '1px dashed var(--el-color-primary)' : ''))
 </script>
 
@@ -24,7 +25,7 @@ const border = computed(() => (props.plot.id === store.canvas.id ? '1px dashed v
   top: v-bind(top);
   left: v-bind(left);
   border: 1px solid red;
-  // box-sizing: border-box;
+  transform: rotate(v-bind(rotate));
   cursor: move;
 }
 </style>

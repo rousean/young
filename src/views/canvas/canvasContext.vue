@@ -1,5 +1,5 @@
 <template>
-  <ElCard class="canvas-context" v-show="show">
+  <ElCard class="canvas-context" v-show="store.canvas.context">
     <div class="btn-wtapper">
       <ElButton class="btn" text>复制</ElButton>
       <ElButton class="btn" text>删除</ElButton>
@@ -12,19 +12,15 @@
 import { ElCard, ElButton } from 'element-plus'
 import { ref } from 'vue'
 import emitter from '@/mitt/index'
-
-const show = ref<boolean>(false)
+import { useDashboardStore } from '@/stores/dashboard'
+const store = useDashboardStore()
 const x = ref<string>('0px')
 const y = ref<string>('0px')
 
 emitter.on('context-show', (e: any) => {
-  if (e.show) {
-    show.value = true
-    x.value = e.x
-    y.value = e.y
-  } else {
-    show.value = false
-  }
+  store.canvas.context = true
+  x.value = e.x
+  y.value = e.y
 })
 </script>
 

@@ -18,7 +18,7 @@ const props = defineProps<Props>()
 
 const icon = computed<string>(() => `#icon-${props.name}`)
 
-const svgClass = computed<string>(() => `svg-icon ${props.className ?? ''} `)
+const svgClass = computed<string>(() => `svg-icon ${props.className ?? ''}`)
 
 const svgStyle = computed<string>(() => (props.size ? `width: ${props.size}px; height: ${props.size}px;` : '' + props.color ? `color: ${props.color};` : ''))
 </script>

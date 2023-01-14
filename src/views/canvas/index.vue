@@ -50,7 +50,9 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
     y: offsetY,
     style: cloneDeep(style.default),
     data: cloneDeep(data.default),
-    zIndex: 1
+    zIndex: 1,
+    rotate: 0,
+    context: false
   })
 }
 </script>

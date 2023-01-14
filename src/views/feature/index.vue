@@ -67,13 +67,9 @@ const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vu
 
 const store = useDashboardStore()
 
-const maxX = computed(() => {
-  return (store.dashboard.width || 0) - (store.canvas.style?.width || 0)
-})
+const maxX = computed(() => (store.dashboard.width || 0) - (store.canvas.style?.width || 0))
 
-const maxY = computed(() => {
-  return (store.dashboard.height || 0) - (store.canvas.style?.height || 0)
-})
+const maxY = computed(() => (store.dashboard.height || 0) - (store.canvas.style?.height || 0))
 
 const router = useRouter()
 const back = () => router.push('/layout')

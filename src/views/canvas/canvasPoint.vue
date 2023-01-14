@@ -1,21 +1,18 @@
 <template>
-  <div v-for="point in points" :key="point.id" :style="point.style" :class="['point', point.class]" @mousedown="(e: MouseEvent) => handleMouseDown(e, point)"></div>
+  <div v-show="store.canvas.id">
+    <div v-for="point in points" :key="point.id" :style="point.style" :class="['point', point.class]" @mousedown="(e: MouseEvent) => handleMouseDown(e, point)"></div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
-const props = defineProps({
-  plot: {
-    type: Object,
-    required: true
-  }
-})
+
 const store = useDashboardStore()
 
 const pos = computed(() => {
-  const width = (props.plot.style.width - 20 - 4) / 2
-  const height = (props.plot.style.height - 20 - 4) / 2
+  const width = ((store.canvas.style?.width || 0) - 22 - 6) / 2
+  const height = ((store.canvas.style?.height || 0) - 22 - 6) / 2
   return { width: `${width}px`, height: `${height}px`, x: `${-width}px`, y: `${-height}px` }
 })
 
@@ -28,19 +25,55 @@ interface Point {
     cursor: string
   }
 }
+
+// 误差
+const error = (coordinate: number): number => {
+  return (coordinate - 3) % 4 === 0 ? 0.5 : 0
+}
+
+// 点绕点旋转公式
+function calcRotate(a, b, angle) {
+  const x = (a.x - b.x) * Math.cos(angle) - (a.y - b.y) * Math.sin(angle) + b.x
+  const y = (a.x - b.x) * Math.sin(angle) + (a.y - b.y) * Math.cos(angle) + b.y
+  return { x: x, y: y }
+}
+interface Position {
+  x: number
+  y: number
+}
+// 角度转弧度
+const angleToRadian = (angle: number): number => (angle * Math.PI) / 180
+
+const xRotate = (p: Position, c: Position, rotate: number): string => `${(p.x - c.x) * Math.cos(rotate) - (p.y - c.y) * Math.sin(rotate) + c.x}px`
+
+const yRotate = (p: Position, c: Position, rotate: number) => `${(p.x - c.x) * Math.sin(rotate) + (p.y - c.y) * Math.cos(rotate) + c.y}px`
+
+
+
+// 8个点坐标
 const points = computed(() => {
-  const x: number = Math.floor(props.plot.x)
-  const y: number = Math.floor(props.plot.y)
-  const width: number = props.plot.style.width
-  const height: number = props.plot.style.height
-  const offset: number = 2
+  const offset: number = 2 // 偏移量
+  const margin: number = 11 // 中间宽度
+  const x: number = store.canvas.x || 0
+  const y: number = store.canvas.y || 0
+  const width: number = store.canvas.style?.width || 0
+  const height: number = store.canvas.style?.height || 0
+  const center = {x: x + width / 2, y: y + height / 2}
+  const xError: number = error(x)
+  const yError: number = error(y)
+  const xOffset: number = x - offset
+  const yOffset: number = y - offset
+  const xOffsetWidth: number = x - offset + width + xError
+  const yOffsetHeight: number = y - offset + height + yError
+  const xHalfWidth: number = x + width / 2 - margin
+  const yHalfHeigth: number = y + height / 2 - margin
   return [
     {
       id: 'left-top',
       class: 'point-circle',
       style: {
-        top: `${y - offset}px`,
-        left: `${x - offset}px`,
+        top: xRotate({ x: xOffset, y: yOffset }, {x}),
+        left: `${t.x}px`,
         cursor: 'nwse-resize'
       }
     },
@@ -48,8 +81,8 @@ const points = computed(() => {
       id: 'right-top',
       class: 'point-circle',
       style: {
-        top: `${y - offset}px`,
-        left: `${x + width - offset}px`,
+        top: yOffset,
+        left: xOffsetWidth,
         cursor: 'nesw-resize'
       }
     },
@@ -57,8 +90,8 @@ const points = computed(() => {
       id: 'left-bottom',
       class: 'point-circle',
       style: {
-        top: `${y + height - offset}px`,
-        left: `${x - offset}px`,
+        top: yOffsetHeight,
+        left: xOffset,
         cursor: 'nesw-resize'
       }
     },
@@ -66,8 +99,8 @@ const points = computed(() => {
       id: 'right-bottom',
       class: 'point-circle',
       style: {
-        top: `${y + height - offset}px`,
-        left: `${x + width - offset}px`,
+        top: yOffsetHeight,
+        left: xOffsetWidth,
         cursor: 'nwse-resize'
       }
     },
@@ -75,8 +108,8 @@ const points = computed(() => {
       id: 'top-middle',
       class: 'point-x-top',
       style: {
-        top: `${y - offset}px`,
-        left: `${x + width / 2 - 10}px`,
+        top: yOffset,
+        left: xHalfWidth,
         cursor: 'row-resize'
       }
     },
@@ -84,8 +117,8 @@ const points = computed(() => {
       id: 'bottom-middle',
       class: 'point-x-bottom',
       style: {
-        top: `${y + height - offset}px`,
-        left: `${x + width / 2 - 10}px`,
+        top: yOffsetHeight,
+        left: xHalfWidth,
         cursor: 'row-resize'
       }
     },
@@ -93,8 +126,8 @@ const points = computed(() => {
       id: 'left-middle',
       class: 'point-y-top',
       style: {
-        top: `${y + height / 2 - 10}px`,
-        left: `${x - offset}px`,
+        top: yHalfHeigth,
+        left: xOffset,
         cursor: 'col-resize'
       }
     },
@@ -102,20 +135,22 @@ const points = computed(() => {
       id: 'right-middle',
       class: 'point-y-bottom',
       style: {
-        top: `${y + height / 2 - 10}px`,
-        left: `${x + width - offset}px`,
+        top: yHalfHeigth,
+        left: xOffsetWidth,
         cursor: 'col-resize'
       }
     }
   ]
 })
+
+// 鼠标事件
 const handleMouseDown = (e: MouseEvent, point: Point) => {
   e.stopPropagation()
-  console.log(e)
-  const x: number = props.plot.x
-  const y: number = props.plot.y
-  const width: number = props.plot.style.width
-  const height: number = props.plot.style.height
+  e.preventDefault()
+  const x: number = store.canvas.x || 0
+  const y: number = store.canvas.y || 0
+  const width: number = store.canvas.style?.width || 0
+  const height: number = store.canvas.style?.height || 0
   const startX: number = e.clientX
   const startY: number = e.clientY
   const id: string = point.id
