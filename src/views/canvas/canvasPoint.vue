@@ -31,25 +31,6 @@ const error = (coordinate: number): number => {
   return (coordinate - 3) % 4 === 0 ? 0.5 : 0
 }
 
-// 点绕点旋转公式
-function calcRotate(a, b, angle) {
-  const x = (a.x - b.x) * Math.cos(angle) - (a.y - b.y) * Math.sin(angle) + b.x
-  const y = (a.x - b.x) * Math.sin(angle) + (a.y - b.y) * Math.cos(angle) + b.y
-  return { x: x, y: y }
-}
-interface Position {
-  x: number
-  y: number
-}
-// 角度转弧度
-const angleToRadian = (angle: number): number => (angle * Math.PI) / 180
-
-const xRotate = (p: Position, c: Position, rotate: number): string => `${(p.x - c.x) * Math.cos(rotate) - (p.y - c.y) * Math.sin(rotate) + c.x}px`
-
-const yRotate = (p: Position, c: Position, rotate: number) => `${(p.x - c.x) * Math.sin(rotate) + (p.y - c.y) * Math.cos(rotate) + c.y}px`
-
-
-
 // 8个点坐标
 const points = computed(() => {
   const offset: number = 2 // 偏移量
@@ -58,22 +39,21 @@ const points = computed(() => {
   const y: number = store.canvas.y || 0
   const width: number = store.canvas.style?.width || 0
   const height: number = store.canvas.style?.height || 0
-  const center = {x: x + width / 2, y: y + height / 2}
   const xError: number = error(x)
   const yError: number = error(y)
-  const xOffset: number = x - offset
-  const yOffset: number = y - offset
-  const xOffsetWidth: number = x - offset + width + xError
-  const yOffsetHeight: number = y - offset + height + yError
-  const xHalfWidth: number = x + width / 2 - margin
-  const yHalfHeigth: number = y + height / 2 - margin
+  const xOffset: string = `${x - offset}px`
+  const yOffset: string = `${y - offset}px`
+  const xOffsetWidth: string = `${x - offset + width + xError}px`
+  const yOffsetHeight: string = `${y - offset + height + yError}px`
+  const xHalfWidth: string = `${x + width / 2 - margin}px`
+  const yHalfHeigth: string = `${y + height / 2 - margin}px`
   return [
     {
       id: 'left-top',
       class: 'point-circle',
       style: {
-        top: xRotate({ x: xOffset, y: yOffset }, {x}),
-        left: `${t.x}px`,
+        top: yOffset,
+        left: xOffset,
         cursor: 'nwse-resize'
       }
     },

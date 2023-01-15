@@ -13,8 +13,8 @@ const props = defineProps({
   }
 })
 const currentComponent = defineAsyncComponent(() => import(`./${props.plot.type}/index.vue`))
-const left = computed(() => `${props.plot.x}px`)
-const top = computed(() => `${props.plot.y}px`)
+const x = computed(() => `${props.plot.x}px`)
+const y = computed(() => `${props.plot.y}px`)
 const rotate = computed(() => `${props.plot.rotate}deg`)
 const border = computed(() => (props.plot.id === store.canvas.id ? '1px dashed var(--el-color-primary)' : ''))
 </script>
@@ -22,10 +22,8 @@ const border = computed(() => (props.plot.id === store.canvas.id ? '1px dashed v
 <style lang="scss" scoped>
 .plot-wrapper {
   position: absolute;
-  top: v-bind(top);
-  left: v-bind(left);
   border: 1px solid red;
-  transform: rotate(v-bind(rotate));
+  transform: translate3d(v-bind(x), v-bind(y), 0px) rotate(v-bind(rotate));
   cursor: move;
 }
 </style>
