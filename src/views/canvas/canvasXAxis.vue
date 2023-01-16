@@ -3,61 +3,41 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
 import { debounce } from '@/util/index'
-import * as d3 from 'd3'
+import type d3 from 'd3'
+import { selectSvg, appendGroup, scaleLinear, axisTop, appendXLineScale, appendXTextScale } from '@/hooks/axis'
 
 const store = useDashboardStore()
 
-const t = d3.transition().duration(500)
+onMounted(() => paintingXAxis(store.dashboard.width))
 
-store.$subscribe(
-  debounce((muatation, state) => {
-    if (muatation.events.key === 'width') {
-      console.log(muatation, state)
-      console.log(111)
-      const width = store.dashboard.width
-      svg.attr('width', width)
-      const xScale = d3.scaleLinear().domain([0, width]).range([0, width])
-      console.log(svg.select('.x-200'))
-      svg
-        .select('.x-200')
-        .call(d3.axisBottom(xScale).ticks(width / 200))
-        .call((g) => g.select('.domain').remove())
-        .call((g) => g.selectAll('.tick line').attr('y2', -10).attr('stroke', '#b2b2b2'))
-        .call((g) => g.selectAll('.tick text').attr('y', -10).attr('x', 1).attr('text-anchor', 'start').attr('fill', '#b2b2b2'))
-      svg
-        .select('.x-20')
-        .call(d3.axisBottom(xScale).ticks(width / 20))
-        .call((g) => g.select('.domain').attr('stroke', '#b2b2b2'))
-        .call((g) => g.selectAll('.tick line').attr('y2', -2).attr('stroke', '#b2b2b2'))
-        .call((g) => g.selectAll('.tick text').remove())
-    }
-  }, 500)
+watch(
+  () => store.dashboard.width,
+  debounce((val) => rePainting(val), 1000)
 )
 
 let svg: d3.Selection<d3.BaseType, unknown, HTMLElement, any>
+let lineScale: d3.Selection<SVGGElement, unknown, HTMLElement, any> // 刻度线
+let textScale: d3.Selection<SVGGElement, unknown, HTMLElement, any> // 刻度值
 
-onMounted(() => {
-  const width = store.dashboard.width
-  paintingXAxis(width)
-})
-function paintingXAxis(width: number): void {
-  svg = d3.select('#canvas-x-axis').attr('width', width).attr('height', 20)
-  const g = svg.append('g').attr('transform', 'translate(0, 20)')
-  const xScale = d3.scaleLinear().domain([0, width]).range([0, width])
-  g.append('g')
-    .attr('class', 'x-200')
-    .call(d3.axisBottom(xScale).ticks(width / 200))
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('y2', -10).attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick text').attr('y', -10).attr('x', 1).attr('text-anchor', 'start').attr('fill', '#b2b2b2'))
-  g.append('g')
-    .attr('class', 'x-20')
-    .call(d3.axisBottom(xScale).ticks(width / 20))
-    .call((g) => g.select('.domain').attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick line').attr('y2', -2).attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick text').remove())
+// 初始化绘制
+const paintingXAxis = (width: number): void => {
+  svg = selectSvg('#canvas-x-axis', width, 20)
+  const group = appendGroup(svg, 0, 20)
+  lineScale = group.append('g')
+  textScale = group.append('g')
+  const xScale = scaleLinear(0, width)
+  appendXLineScale(lineScale, axisTop(xScale, width / 20))
+  appendXTextScale(textScale, axisTop(xScale, width / 200))
+}
+
+// 重绘
+const rePainting = (width: number): void => {
+  svg.attr('width', width)
+  const xScale = scaleLinear(0, width)
+  appendXLineScale(lineScale, axisTop(xScale, width / 20))
+  appendXTextScale(textScale, axisTop(xScale, width / 200))
 }
 </script>

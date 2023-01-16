@@ -3,41 +3,42 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
 import { debounce } from '@/util/index'
-import * as d3 from 'd3'
+import type * as d3 from 'd3'
+import { selectSvg, scaleLinear, axisTop, axisLeft, appendXGrid, appendYGrid } from '@/hooks/axis'
+
 const store = useDashboardStore()
 
-store.$subscribe(
-  debounce(() => {
-    d3.select('#canvas-grid g').remove()
-    const width: number = store.dashboard.width
-    const height: number = store.dashboard.height
-    paintingGrid(width, height)
-  }, 500)
+onMounted(() => paintingGrid(store.dashboard.width, store.dashboard.height))
+
+watch(
+  [() => store.dashboard.width, () => store.dashboard.height],
+  debounce((val) => rePainting(val[0], val[1]), 1000)
 )
 
-onMounted(() => {
-  const width: number = store.dashboard.width
-  const height: number = store.dashboard.height
-  paintingGrid(width, height)
-})
-function paintingGrid(width: number, height: number): void {
-  const svg = d3.select('#canvas-grid').attr('width', width).attr('height', height).append('g')
-  const xScale = d3.scaleLinear().domain([0, width]).range([0, width])
-  svg
-    .append('g')
-    .call(d3.axisBottom(xScale).ticks(width / 20))
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick text').remove())
-    .call((g) => g.selectAll('.tick line').attr('y2', height).attr('fill', '#dcdfe6').attr('stroke-width', '0.2').attr('stroke-opacity', '0.2'))
-  const yScale = d3.scaleLinear().domain([0, height]).range([0, height])
-  svg
-    .append('g')
-    .call(d3.axisRight(yScale).ticks(height / 20))
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick text').remove())
-    .call((g) => g.selectAll('.tick line').attr('x2', width).attr('fill', '#dcdfe6').attr('stroke-width', '0.2').attr('stroke-opacity', '0.2'))
+let svg: d3.Selection<d3.BaseType, unknown, HTMLElement, any>
+let xGrid: d3.Selection<SVGGElement, unknown, HTMLElement, any>
+let yGrid: d3.Selection<SVGGElement, unknown, HTMLElement, any>
+
+// 初始化绘制
+const paintingGrid = (width: number, height: number): void => {
+  svg = selectSvg('#canvas-grid', width, height)
+  xGrid = svg.append('g')
+  yGrid = svg.append('g')
+  const xScale = scaleLinear(0, width)
+  const yScale = scaleLinear(0, height)
+  appendXGrid(xGrid, axisTop(xScale, width / 20), height)
+  appendYGrid(yGrid, axisLeft(yScale, height / 20), width)
+}
+
+// 重绘
+const rePainting = (width: number, height: number): void => {
+  svg.attr('width', width).attr('height', height)
+  const xScale = scaleLinear(0, width)
+  const yScale = scaleLinear(0, height)
+  appendXGrid(xGrid, axisTop(xScale, width / 20), height)
+  appendYGrid(yGrid, axisLeft(yScale, height / 20), width)
 }
 </script>

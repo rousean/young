@@ -3,38 +3,41 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
 import { debounce } from '@/util/index'
-import * as d3 from 'd3'
+import type * as d3 from 'd3'
+import { selectSvg, appendGroup, scaleLinear, axisLeft, appendYLineScale, appendYTextScale } from '@/hooks/axis'
+
 const store = useDashboardStore()
 
-store.$subscribe(
-  debounce(() => {
-    d3.select('#canvas-y-axis g').remove()
-    const height = store.dashboard.height
-    paintingYAxis(height)
-  }, 500)
+onMounted(() => paintingYAxis(store.dashboard.height))
+
+watch(
+  () => store.dashboard.height,
+  debounce((val) => rePainting(val), 1000)
 )
 
-onMounted(() => {
-  const height = store.dashboard.height
-  paintingYAxis(height)
-})
-function paintingYAxis(height: number) {
-  const svg = d3.select('#canvas-y-axis').attr('width', 20).attr('height', height).append('g').attr('transform', 'translate(20, 0)')
-  const yScale = d3.scaleLinear().domain([0, height]).range([0, height])
-  svg
-    .append('g')
-    .call(d3.axisRight(yScale).ticks(height / 200))
-    .call((g) => g.select('.domain').remove())
-    .call((g) => g.selectAll('.tick line').attr('x2', -10).attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick text').attr('x', -10).attr('style', 'writing-mode: tb').attr('fill', '#b2b2b2'))
-  svg
-    .append('g')
-    .call(d3.axisRight(yScale).ticks(height / 20))
-    .call((g) => g.select('.domain').attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick line').attr('x2', -2).attr('stroke', '#b2b2b2'))
-    .call((g) => g.selectAll('.tick text').remove())
+let svg: d3.Selection<d3.BaseType, unknown, HTMLElement, any>
+let lineScale: d3.Selection<SVGGElement, unknown, HTMLElement, any> // 刻度线
+let textScale: d3.Selection<SVGGElement, unknown, HTMLElement, any> // 刻度值
+
+// 初始化绘制
+const paintingYAxis = (height: number): void => {
+  svg = selectSvg('#canvas-y-axis', 20, height)
+  const group = appendGroup(svg, 20, 0)
+  lineScale = group.append('g')
+  textScale = group.append('g')
+  const yScale = scaleLinear(0, height)
+  appendYLineScale(lineScale, axisLeft(yScale, height / 20))
+  appendYTextScale(textScale, axisLeft(yScale, height / 200))
+}
+
+// 重绘
+const rePainting = (height: number): void => {
+  svg.attr('height', height)
+  const yScale = scaleLinear(0, height)
+  appendYLineScale(lineScale, axisLeft(yScale, height / 20))
+  appendYTextScale(textScale, axisLeft(yScale, height / 200))
 }
 </script>
