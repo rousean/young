@@ -1,5 +1,5 @@
 <template>
-  <SvgIcon v-show="store.canvas.id" className="rotate-icon" name="rotate" size="16" @mousedown="handleRotate"></SvgIcon>
+  <SvgIcon className="rotate-icon" name="rotate" size="16" @mousedown="handleRotate"></SvgIcon>
 </template>
 
 <script setup lang="ts">
@@ -10,10 +10,8 @@ const store = useDashboardStore()
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 
 const pos = computed(() => {
-  const x: number = store.canvas.x || 0
-  const y: number = (store.canvas.y || 0) - 30
   const width: number = store.canvas.style?.width || 0
-  return { top: `${y}px`, left: `${x + width / 2 - 8}px` }
+  return { top: '-30px', left: `${width / 2 - 11}px` }
 })
 const handleRotate = (e: MouseEvent) => {
   e.stopPropagation()
@@ -27,10 +25,10 @@ const handleRotate = (e: MouseEvent) => {
   const rotateDegreeBefore = Math.atan2(startY - centerY, startX - centerX) / (Math.PI / 180)
 
   const move = (e: MouseEvent) => {
-    const curX = e.clientX
-    const curY = e.clientY
+    const currentX = e.clientX
+    const currrentY = e.clientY
     // 旋转后的角度
-    const rotateDegreeAfter = Math.atan2(curY - centerY, curX - centerX) / (Math.PI / 180)
+    const rotateDegreeAfter = Math.atan2(currrentY - centerY, currentX - centerX) / (Math.PI / 180)
     // 获取旋转的角度值
     store.canvas.rotate = startRotate + rotateDegreeAfter - rotateDegreeBefore
   }

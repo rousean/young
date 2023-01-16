@@ -43,6 +43,7 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
   const offsetY = e.offsetY - 40 <= 0 ? 0 : e.offsetY - 40
   const style = await import(`../../components/young/${type}/style.ts`)
   const data = await import(`../../components/young/${type}/data.ts`)
+  const config = await import(`../../components/young/${type}/config.ts`)
   store.painting({
     id: UUID(),
     type,
@@ -50,6 +51,7 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
     y: offsetY,
     style: cloneDeep(style.default),
     data: cloneDeep(data.default),
+    config: cloneDeep(config.default),
     zIndex: 1,
     rotate: 0,
     context: false

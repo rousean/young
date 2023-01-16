@@ -8,9 +8,9 @@ const style: Style = {
   width: 200,
   height: 200,
   nightingaleRose: false,
-  outerRadius: 0.8,
-  innerRadius: 0.6,
+  outerRadius: 0.4,
+  innerRadius: 0.2,
   cornerRadius: 10,
-  padAngel: 0.01
+  padAngle: 0.01
 }
 export default style

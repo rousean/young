@@ -3,10 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import * as d3 from 'd3'
-
-import data from './data'
 
 const props = defineProps({
   plot: {
@@ -16,6 +14,28 @@ const props = defineProps({
 })
 
 const id = computed(() => `Young-${props.plot.id}`)
+
+watch(
+  [() => props.plot.style, () => props.plot.data],
+  (val) => {
+    d3.select(`#${id.value} g`).remove()
+    console.log(val)
+    new Pie({
+      id: id.value,
+      data: props.plot.data,
+      width: props.plot.style.width,
+      height: props.plot.style.height,
+      nightingaleRose: props.plot.style.nightingaleRose,
+      outerRadius: props.plot.style.outerRadius,
+      innerRadius: props.plot.style.innerRadius,
+      cornerRadius: props.plot.style.cornerRadius,
+      padAngle: props.plot.style.padAngle
+    })
+  },
+  {
+    deep: true
+  }
+)
 
 interface Option {
   id: string
@@ -49,13 +69,13 @@ class Pie {
     const { id, width, height, data, nightingaleRose, outerRadius, innerRadius, cornerRadius, padAngle } = option
     this.id = id
     this.data = data
-    this.width = width || 200
-    this.height = height || 200
-    this.nightingaleRose = nightingaleRose || false // 南丁格尔玫瑰图模式
-    this.outerRadius = outerRadius || this.width / 3 // 外半径
-    this.innerRadius = innerRadius || this.width / 4 // 内半径
-    this.cornerRadius = cornerRadius || 10 // 边角半径
-    this.padAngle = padAngle || 0.01 // 饼图间隙
+    this.width = width
+    this.height = height
+    this.nightingaleRose = nightingaleRose // 南丁格尔玫瑰图模式
+    this.outerRadius = outerRadius * this.width // 外半径
+    this.innerRadius = innerRadius * this.width // 内半径
+    this.cornerRadius = cornerRadius // 边角半径
+    this.padAngle = padAngle // 饼图间隙
     this.svg = null
     this.init()
   }
@@ -133,7 +153,14 @@ class Pie {
 onMounted(() => {
   new Pie({
     id: id.value,
-    data
+    data: props.plot.data,
+    width: props.plot.style.width,
+    height: props.plot.style.height,
+    nightingaleRose: props.plot.style.nightingaleRose,
+    outerRadius: props.plot.style.outerRadius,
+    innerRadius: props.plot.style.innerRadius,
+    cornerRadius: props.plot.style.cornerRadius,
+    padAngle: props.plot.style.padAngle
   })
 })
 </script>

@@ -1,7 +1,5 @@
 <template>
-  <div v-show="store.canvas.id">
-    <div v-for="point in points" :key="point.id" :style="point.style" :class="['point', point.class]" @mousedown="(e: MouseEvent) => handleMouseDown(e, point)"></div>
-  </div>
+  <div v-for="point in points" :key="point.id" :style="point.style" :class="['point', point.class]" @mousedown="(e: MouseEvent) => handleMouseDown(e, point)"></div>
 </template>
 
 <script setup lang="ts">
@@ -9,12 +7,6 @@ import { computed } from 'vue'
 import { useDashboardStore } from '@/stores/dashboard'
 
 const store = useDashboardStore()
-
-const pos = computed(() => {
-  const width = ((store.canvas.style?.width || 0) - 22 - 6) / 2
-  const height = ((store.canvas.style?.height || 0) - 22 - 6) / 2
-  return { width: `${width}px`, height: `${height}px`, x: `${-width}px`, y: `${-height}px` }
-})
 
 interface Point {
   id: string
@@ -26,27 +18,18 @@ interface Point {
   }
 }
 
-// 误差
-const error = (coordinate: number): number => {
-  return (coordinate - 3) % 4 === 0 ? 0.5 : 0
-}
-
 // 8个点坐标
 const points = computed(() => {
-  const offset: number = 2 // 偏移量
-  const margin: number = 11 // 中间宽度
-  const x: number = store.canvas.x || 0
-  const y: number = store.canvas.y || 0
+  const offset: number = -3 // 偏移量
+  const margin: number = 10 // 中间宽度
   const width: number = store.canvas.style?.width || 0
   const height: number = store.canvas.style?.height || 0
-  const xError: number = error(x)
-  const yError: number = error(y)
-  const xOffset: string = `${x - offset}px`
-  const yOffset: string = `${y - offset}px`
-  const xOffsetWidth: string = `${x - offset + width + xError}px`
-  const yOffsetHeight: string = `${y - offset + height + yError}px`
-  const xHalfWidth: string = `${x + width / 2 - margin}px`
-  const yHalfHeigth: string = `${y + height / 2 - margin}px`
+  const xOffset: string = `${offset}px`
+  const yOffset: string = `${offset}px`
+  const xOffsetWidth: string = `${offset + width}px`
+  const yOffsetHeight: string = `${offset + height}px`
+  const xHalfWidth: string = `${offset + width / 2 - margin}px`
+  const yHalfHeigth: string = `${offset + height / 2 - margin}px`
   return [
     {
       id: 'left-top',
@@ -86,7 +69,7 @@ const points = computed(() => {
     },
     {
       id: 'top-middle',
-      class: 'point-x-top',
+      class: 'point-x',
       style: {
         top: yOffset,
         left: xHalfWidth,
@@ -95,7 +78,7 @@ const points = computed(() => {
     },
     {
       id: 'bottom-middle',
-      class: 'point-x-bottom',
+      class: 'point-x',
       style: {
         top: yOffsetHeight,
         left: xHalfWidth,
@@ -104,7 +87,7 @@ const points = computed(() => {
     },
     {
       id: 'left-middle',
-      class: 'point-y-top',
+      class: 'point-y',
       style: {
         top: yHalfHeigth,
         left: xOffset,
@@ -113,7 +96,7 @@ const points = computed(() => {
     },
     {
       id: 'right-middle',
-      class: 'point-y-bottom',
+      class: 'point-y',
       style: {
         top: yHalfHeigth,
         left: xOffsetWidth,
@@ -172,69 +155,14 @@ const handleMouseDown = (e: MouseEvent, point: Point) => {
   width: 4px;
   height: 4px;
 }
-.point-x-top,
-.point-x-bottom {
+.point-x {
   width: 20px;
   height: 4px;
   border-radius: 4px;
 }
-.point-x-top::before,
-.point-x-top::after,
-.point-x-bottom::before,
-.point-x-bottom::after {
-  content: '';
-  position: absolute;
-  width: v-bind('pos.width');
-  height: 0;
-  border-top: 1px dashed var(--el-color-primary);
-}
-
-.point-x-top::before {
-  bottom: 2px;
-  left: v-bind('pos.x');
-}
-.point-x-top::after {
-  bottom: 2px;
-  right: v-bind('pos.x');
-}
-.point-x-bottom::before {
-  top: 2px;
-  left: v-bind('pos.x');
-}
-.point-x-bottom::after {
-  top: 2px;
-  right: v-bind('pos.x');
-}
-.point-y-top,
-.point-y-bottom {
+.point-y {
   width: 4px;
   height: 20px;
   border-radius: 4px;
-}
-.point-y-top::before,
-.point-y-bottom::before,
-.point-y-top::after,
-.point-y-bottom::after {
-  content: '';
-  position: absolute;
-  height: v-bind('pos.height');
-  width: 0;
-  border-left: 1px dashed var(--el-color-primary);
-}
-.point-y-top::before {
-  right: 2px;
-  top: v-bind('pos.y');
-}
-.point-y-top::after {
-  right: 2px;
-  bottom: v-bind('pos.y');
-}
-.point-y-bottom::before {
-  left: 2px;
-  top: v-bind('pos.y');
-}
-.point-y-bottom::after {
-  left: 2px;
-  bottom: v-bind('pos.y');
 }
 </style>

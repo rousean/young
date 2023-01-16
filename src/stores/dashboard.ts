@@ -33,6 +33,7 @@ interface Canvas {
   context: boolean
   data: any
   style: Style
+  config: any
 }
 
 export const useDashboardStore = defineStore('dashboard', {

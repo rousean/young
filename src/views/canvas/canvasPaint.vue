@@ -1,9 +1,15 @@
 <template>
   <div class="canvas-paint" @mousedown="handleFather" @contextmenu="handleFather">
-    <CanvasContext></CanvasContext>
-    <CanvasPoint></CanvasPoint>
-    <CanvasRorate></CanvasRorate>
-    <ProxyYoung v-for="plot in store.dashboard.canvas" :key="plot.id" :plot="plot" @mousedown="handleMouseDown" @contextmenu="handleContextmenu"></ProxyYoung>
+    <div class="canvas-wrapper" v-for="plot in store.dashboard.canvas" :key="plot.id" :style="{ transform: `translate3d(${plot.x}px, ${plot.y}px, 0px) rotate(${plot.rotate}deg)` }">
+      <div class="young-container">
+        <ProxyYoung :style="{ outline: `${plot.id === store.canvas.id ? '1px dashed var(--el-color-primary)' : ''}` }" :plot="plot" @mousedown="handleMouseDown" @contextmenu="handleContextmenu"></ProxyYoung>
+        <div v-show="plot.id === store.canvas.id">
+          <CanvasContext></CanvasContext>
+          <CanvasRorate></CanvasRorate>
+          <CanvasPoint></CanvasPoint>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -22,7 +28,7 @@ const store = useDashboardStore()
 const handleContextmenu = (e: MouseEvent) => {
   e.stopPropagation()
   e.preventDefault()
-  emitter.emit('context-show', { x: `${(store.canvas.x || 0) + e.offsetX}px`, y: `${(store.canvas.y || 0) + e.offsetY}px` })
+  emitter.emit('context-show', { x: `${e.offsetX}px`, y: `${e.offsetY}px` })
 }
 
 const handleFather = (e: MouseEvent) => {
@@ -56,5 +62,11 @@ const handleMouseDown = (e: MouseEvent): void => {
 <style lang="scss" scoped>
 .canvas-paint {
   position: relative;
+  .canvas-wrapper {
+    position: absolute;
+    .young-container {
+      position: relative;
+    }
+  }
 }
 </style>
