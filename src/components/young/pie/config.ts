@@ -1,4 +1,4 @@
-export default [
+const config = [
   {
     label: '基础配置',
     children: [
@@ -23,5 +23,28 @@ export default [
         nmae: 'padAngel'
       }
     ]
+  },
+  {
+    label: 'X轴',
+    children: [
+      {
+        label: '显示X轴',
+        type: 'boolean',
+        name: 'showX',
+        children: [
+          {
+            label: '字体大小',
+            type: 'number',
+            name: 'xFontSize'
+          },
+          {
+            label: '字体颜色',
+            type: 'number',
+            name: 'xFontColor'
+          }
+        ]
+      }
+    ]
   }
 ]
+export default config

@@ -95,12 +95,10 @@ class Pie {
   }
 
   createPie() {
-    const values: Iterable<number> = this.data.map((item) => item.value)
+    const values = this.data.map((item) => item.value)
+    const max: number = d3.max(values) as number
     // 构建比例尺 南丁格尔模式使用
-    const lineScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(values)])
-      .range([this.innerRadius, this.outerRadius])
+    const lineScale = d3.scaleLinear().domain([0, max]).range([this.innerRadius, this.outerRadius])
     const arc = d3
       .arc()
       .innerRadius(this.innerRadius)
@@ -109,7 +107,7 @@ class Pie {
     const pie = d3
       .pie()
       .padAngle(this.padAngle)
-      .value((d: any) => d.value)(this.data)
+      .value((d: any) => d.value)(this.data as unknown as (number | { valueOf(): number })[])
     pie.forEach((item: any) => {
       item.color = d3.interpolateRainbow(item.index / pie.length)
     })

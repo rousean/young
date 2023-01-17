@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 import { useDashboardStore } from '@/stores/dashboard'
 import { debounce } from 'lodash'
@@ -18,14 +18,19 @@ const ProxyAttribute = defineAsyncComponent(() => import('@/components/attribute
 
 const config = ref(store.canvas.config)
 
-store.$subscribe((mutation, state) => {
-  if (mutation.events.key === 'id') {
-    console.log(mutation, state)
-    config.value = store.canvas.config
-  } else {
-    config.value = ''
-  }
+watch(config, (val) => {
+  console.log(val)
 })
+
+watch(
+  () => store.canvas.id,
+  () => {
+    config.value = store.canvas.config
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <style lang="scss" scoped>

@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { ElInputNumber } from 'element-plus'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   config: {
@@ -15,7 +15,16 @@ const props = defineProps({
   }
 })
 
-const modelValue = ref(props?.config?.value)
+const emit = defineEmits(['update:modelValue'])
+
+const modelValue = computed({
+  get() {
+    return props?.config?.value
+  },
+  set(val) {
+    emit('update:modelValue', val)
+  }
+})
 </script>
 
 <style lang="scss" scoped>

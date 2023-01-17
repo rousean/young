@@ -11,6 +11,9 @@ const style: Style = {
   outerRadius: 0.4,
   innerRadius: 0.2,
   cornerRadius: 10,
-  padAngle: 0.01
+  padAngle: 0.01,
+  showX: true,
+  xFontSize: 12,
+  xFontColor: '#000'
 }
 export default style
