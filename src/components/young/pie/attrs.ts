@@ -1,26 +1,31 @@
-const config = [
+import type { Attrs } from '@/types/global.type'
+
+const attrs: Attrs[] = [
   {
     label: '基础配置',
     children: [
       {
         label: '外半径',
-        type: 'slide',
-        name: 'outerRadius'
+        type: 'text',
+        name: 'outerRadius',
+        row: true
       },
       {
         label: '内半径',
-        type: 'slide',
+        type: 'text',
         name: 'innerRadius'
       },
       {
-        label: '边角半径',
-        type: 'number',
-        name: 'cornerRadius'
+        label: '边角半径测试',
+        type: 'text',
+        name: 'cornerRadius',
+        row: true
       },
       {
         label: '区间间隙',
-        type: 'slide',
-        nmae: 'padAngel'
+        type: 'text',
+        name: 'padAngle',
+        row: true
       }
     ]
   },
@@ -29,22 +34,24 @@ const config = [
     children: [
       {
         label: '显示X轴',
-        type: 'boolean',
+        type: 'switch',
         name: 'showX',
         children: [
           {
             label: '字体大小',
             type: 'number',
-            name: 'xFontSize'
+            name: 'xFontSize',
+            row: true
           },
           {
             label: '字体颜色',
             type: 'number',
-            name: 'xFontColor'
+            name: 'xFontColor',
+            row: true
           }
         ]
       }
     ]
   }
 ]
-export default config
+export default attrs

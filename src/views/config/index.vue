@@ -24,7 +24,7 @@ const AttrConfig = defineAsyncComponent(() => import('./attrConfig.vue'))
 const DataConfig = defineAsyncComponent(() => import('./dataConfig.vue'))
 const SvgIcon = defineAsyncComponent(() => import('@/components/svgIcon/index.vue'))
 
-const isCollapse = ref<boolean>(true)
+const isCollapse = ref<boolean>(false)
 const width = computed<string>(() => (isCollapse.value ? '0px' : '360px'))
 const collapseIcon = computed<string>(() => (isCollapse.value ? 'indentation-left' : 'indentation-right'))
 

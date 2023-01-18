@@ -1,6 +1,6 @@
 <template>
   <div class="number-wrapper">
-    <div>{{ props?.config?.label }}</div>
+    <div>{{ props?.attr?.label }}</div>
     <ElInputNumber v-model="modelValue"></ElInputNumber>
   </div>
 </template>
@@ -10,7 +10,7 @@ import { ElInputNumber } from 'element-plus'
 import { computed } from 'vue'
 
 const props = defineProps({
-  config: {
+  attr: {
     type: Object
   }
 })
@@ -19,7 +19,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const modelValue = computed({
   get() {
-    return props?.config?.value
+    return props?.attr?.value
   },
   set(val) {
     emit('update:modelValue', val)

@@ -1,12 +1,12 @@
 <template>
-  <div class="radio-wrapper">
-    <div>{{ props?.attr?.label }}</div>
-    <ElSlider v-model="modelValue" show-input></ElSlider>
+  <div class="number-wrapper">
+    <div>{{ props.attr?.label }}</div>
+    <ElColorPicker v-model="modelValue"></ElColorPicker>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ElSlider } from 'element-plus'
+import { ElColorPicker } from 'element-plus'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -19,7 +19,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const modelValue = computed({
   get() {
-    return props?.attr?.value
+    return props.attr?.value
   },
   set(val) {
     emit('update:modelValue', val)
@@ -28,7 +28,7 @@ const modelValue = computed({
 </script>
 
 <style lang="scss" scoped>
-.radio-wrapper {
+.number-wrapper {
   display: flex;
   align-items: center;
   padding: 0 10px;

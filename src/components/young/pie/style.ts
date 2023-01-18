@@ -1,8 +1,4 @@
-interface Style {
-  width: number
-  height: number
-  [prop: string]: any
-}
+import type { Style } from '@/types/global.type'
 
 const style: Style = {
   width: 200,

@@ -38,11 +38,11 @@ const handleDragOver = (e: DragEvent): void => e.preventDefault()
 const handleDrop = async (e: DragEvent): Promise<void> => {
   e.stopPropagation()
   const type = e.dataTransfer!.getData('type')
-  const offsetX = e.offsetX - 40
-  const offsetY = e.offsetY - 40
   const style = await import(`../../components/young/${type}/style.ts`)
   const data = await import(`../../components/young/${type}/data.ts`)
-  const config = await import(`../../components/young/${type}/config.ts`)
+  const attrs = await import(`../../components/young/${type}/attrs.ts`)
+  const offsetX = e.offsetX - 40
+  const offsetY = e.offsetY - 40
   store.painting({
     id: UUID(),
     type,
@@ -50,7 +50,7 @@ const handleDrop = async (e: DragEvent): Promise<void> => {
     y: offsetY < 0 ? 0 : offsetY,
     style: cloneDeep(style.default),
     data: cloneDeep(data.default),
-    config: cloneDeep(config.default),
+    attrs: cloneDeep(attrs.default),
     zIndex: 1,
     rotate: 0,
     context: false

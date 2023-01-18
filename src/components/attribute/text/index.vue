@@ -1,6 +1,6 @@
 <template>
   <div class="text-wrapper">
-    <div>{{ props?.config?.label }}</div>
+    <div>{{ props?.attr?.label }}</div>
     <ElInput v-model="modelValue"></ElInput>
   </div>
 </template>
@@ -10,7 +10,7 @@ import { ElInput } from 'element-plus'
 import { computed } from 'vue'
 
 const props = defineProps({
-  config: {
+  attr: {
     type: Object
   }
 })
@@ -19,7 +19,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const modelValue = computed({
   get() {
-    return props?.config?.value
+    return props?.attr?.value
   },
   set(val) {
     emit('update:modelValue', val)
@@ -32,11 +32,12 @@ const modelValue = computed({
   display: flex;
   align-items: center;
   padding: 0 10px;
+  font-size: 12px;
   > :nth-child(1) {
-    flex: 1;
+    width: 75px;
   }
   > :nth-child(2) {
-    flex: 2;
+    width: 80px;
   }
 }
 </style>

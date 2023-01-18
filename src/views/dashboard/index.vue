@@ -33,7 +33,6 @@ const Config = defineAsyncComponent(() => import('@/views/config/index.vue'))
     overflow: hidden;
     > :nth-child(2) {
       display: flex;
-      // justify-content: center;
       flex: 1;
     }
   }

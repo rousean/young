@@ -1,39 +1,10 @@
 import { defineStore } from 'pinia'
 import { UUID } from '@/util/index'
+import type { Canvas, Dashboard } from '@/types/global.type'
 // 当前store
 interface DashboardState {
   dashboard: Dashboard
   canvas: Partial<Canvas>
-}
-
-// 仪表盘属性
-interface Dashboard {
-  id: string
-  width: number
-  height: number
-  name: string
-  scale: number
-  canvas: Canvas[]
-}
-
-interface Style {
-  width: number
-  height: number
-  [prop: string]: any
-}
-
-// 画布属性
-interface Canvas {
-  id: string
-  type: string
-  x: number
-  y: number
-  zIndex: number
-  rotate: number
-  context: boolean
-  data: any
-  style: Style
-  config: any
 }
 
 export const useDashboardStore = defineStore('dashboard', {

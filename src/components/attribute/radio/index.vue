@@ -1,8 +1,8 @@
 <template>
   <div class="radio-wrapper">
-    <div>{{ props?.config?.label }}</div>
+    <div>{{ props?.attr?.label }}</div>
     <ElRadioGroup v-model="modelValue">
-      <ElRadio v-for="(value, key) in props?.config?.option" :key="value" :label="key">{{ value }}</ElRadio>
+      <ElRadio v-for="(value, key) in props?.attr?.option" :key="value" :label="key">{{ value }}</ElRadio>
     </ElRadioGroup>
   </div>
 </template>
@@ -12,7 +12,7 @@ import { ElRadioGroup, ElRadio } from 'element-plus'
 import { computed } from 'vue'
 
 const props = defineProps({
-  config: {
+  attr: {
     type: Object
   }
 })
@@ -21,7 +21,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const modelValue = computed({
   get() {
-    return props?.config?.value
+    return props?.attr?.value
   },
   set(val) {
     emit('update:modelValue', val)
