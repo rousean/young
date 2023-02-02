@@ -1,8 +1,8 @@
 <template>
-  <ElCollapse v-if="attrs.length" accordion @change="handleChange">
+  <ElCollapse v-if="attrs.length" accordion v-model="activeName" @change="handleChange">
     <ElCollapseItem v-for="attr in attrs" :key="attr.label" :title="attr.label" :name="attr.label">
-      <template v-if="collapses.includes(activeName)">
-        <div class="item-wrapper" v-for="(child, i) in attr.children" :key="i" v-show="">
+      <template v-if="changeCollapse.has(attr.label)">
+        <div class="item-wrapper" v-for="(child, i) in attr.children" :key="i">
           <template v-for="item in child" :key="item.label">
             <div v-if="item.children">
               <ProxyAttribute :attr="item"></ProxyAttribute>
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, reactive, ref, watch } from 'vue'
 import { ElCollapse, ElCollapseItem, type CollapseModelValue } from 'element-plus'
 import { useDashboardStore } from '@/stores/dashboard'
 import { cloneDeep } from 'lodash'
@@ -34,9 +34,7 @@ const attrs = ref<Attrs[]>([])
 
 const activeName = ref<string>('')
 
-const collapses = computed<Array<string>>(() => attrs.value.map((attr) => attr.label))
-
-const diff = ''
+const changeCollapse = reactive<Set<string>>(new Set())
 
 watch(attrs, (val) => {
   console.log(val)
@@ -51,6 +49,9 @@ watch(
     }
     const style = store.canvas.style as Style
     let attribute = cloneDeep<Attrs[]>(store.canvas.attrs)
+    activeName.value = attribute[0].label
+    changeCollapse.clear()
+    changeCollapse.add(activeName.value)
     attribute.forEach((attr) => (attr.children = handleChildren(attr.children as Children[], style)))
     attrs.value = attribute
   },
@@ -60,6 +61,9 @@ watch(
 )
 
 const handleChange = (activeName: CollapseModelValue) => {
+  if (activeName) {
+    changeCollapse.add(activeName)
+  }
   console.log(activeName)
 }
 

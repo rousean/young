@@ -10,6 +10,6 @@ const style: Style = {
   padAngle: 0.01,
   showX: true,
   xFontSize: 12,
-  xFontColor: '#000'
+  xFontColor: 10
 }
 export default style
